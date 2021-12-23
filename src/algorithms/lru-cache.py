@@ -1,5 +1,3 @@
-# https://gitlab.com/pranav/my-sprints/-/snippets/2170659
-# https://practice.geeksforgeeks.org/problems/lru-cache/1
 #User function Template for python3
 
 
@@ -53,6 +51,13 @@ Cache design:
 
 
 # design the class in the most optimal way
+class Node:
+    def __init__(self, value):
+        self.next = None
+        self.prev = None
+        self.data = value
+
+
 
 class LRUCache:
       
@@ -64,10 +69,23 @@ class LRUCache:
         '''
         self.cap = cap
         self.current_cache_size = 0
-        self.cache = None
+        #self.cache = None
         self.hMap = None
         self.cache_head = None
         self.cache_tail = None
+        
+    def update_cache_head(self, frame_node):
+        if frame_node is not self.cache_head: # if accessed node is not head
+            if frame_node == self.cache_tail: # is it tail?
+                self.cache_tail = frame_node.prev
+                self.cache_tail.next = None
+            else:
+                frame_node.next.prev = frame_node.prev
+            frame_node.next = self.cache_head
+            frame_node.prev = None
+            self.cache_head = frame_node
+        else:
+            return # do nothing as the LRU node is already at head
         
     #Function to return value corresponding to the key.
     def get(self, key):
@@ -75,15 +93,12 @@ class LRUCache:
         '''
         returns the value of the key if it already exists in the cache otherwise returns -1.(O(1))
         '''
-        if 
+        if key in self.hMap:
+            self.update_cache_head(self.hMap[key]) # put this node to the head
+            return self.hMap[key].data
+        else:
+            return -1
 
-    def update_cache_head(self, frame_node):
-        frame_node.prev.next = frame_node.next
-        frame_node.next.prev = frame_node.prev
-        frame_node.next = self.cache_head
-        self.cache_head.prev = frame_node
-        frame_node.prev = None
-        self.cache_head = frame_node
         
     #Function for storing key-value pair.   
     def set(self, key, value):
@@ -100,22 +115,25 @@ class LRUCache:
         else: # key not in cache
             frame_node = Node(value) # also sets frame_node.next = None, frame_node.prev = None
             hMap[key] = frame_node
-            if not self.cache: # cache is empty
+            if not self.cache_head: # cache is empty
                 self.cache_head = frame_node
                 self.cache_tail = frame_node
             else: # cache is not empty
                 if self.cache_current_size < self.cap:
-                    if frame_node is not self.cache_head: # if accessed node is not head
-                        if frame_node = self.cache_tail:
-                            self.cache_tail = frame_node.prev
-                            self.update_cache_head(frame_node)
+                    self.update_cache_head(frame_node)
+                    self.cache_current_size += 1
                 else:
                     # evict LRU
+                    prev_tail_node = self.cache_tail
                     self.cache_tail = self.cache_tail.prev
-                    self.cache_tail.prev.next = None
-                    delete(self.cache_tail) # TODO
+                    self.cache_tail.next = None
+                    self.update_cache_head(frame_node) # put newly brought in frame as LRU
+                    # https://stackoverflow.com/a/13149770/985166
+                    evicted_node_key = list(self.hMap.keys())[list(self.hMap.values()).index(prev_tail_node)
+                    self.hMap.pop(evicted_node_key) # remove reference to evicted node
+                    del prev_tail_node # remove evicted node from cache
                     
-            self.cache_current_size += 1                    
+                                
                 
 
 
