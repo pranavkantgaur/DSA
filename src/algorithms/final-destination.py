@@ -56,7 +56,7 @@ Output:
 '''
 
 class Solution:
-    def canReach(self, a, b, x):
+    def canReachBFS(self, a, b, x):
         to_visit = []
         to_visit.append([0, 0])
         step = 0
@@ -83,31 +83,15 @@ class Solution:
                 continue
         return 0 
         
-    def canReachNaive(self, a, b, x):
+    def canReach(self, a, b, x): # Final solution, TC: O(1), SC: O(1)
         # code here
-        if a == 0 and b == 0:
-            if x % 2 == 0:
-                return 1
-            else:
-                return 0
-        elif a == 0:
-            if b % 2 == 0 and x > b and x % b == 0: # [0, 11], x = 13
-                return 1
-            elif b % 2 == 1 and x > b and x % b == 1:
-                return 1
-            else:
-                return 0
-        elif b == 0:
-            if a % 2 == 0 and x > a and x % a == 0:
-                return 1
-            elif b % 2 == 1 and x > b and x % b == 1:
-                return 1
-            else:
-                return 0                
-        if abs(a + b) != x:
+        sum_ab = abs(a) + abs(b)
+        if x < sum_ab: # sanity check
             return 0
-        else:
+        if sum_ab % 2 == x % 2: # (0,0, 8)->1, (0, 0, 7)-> 0
             return 1
+        else:
+            return 0
 
 #{ 
 #  Driver Code Starts
