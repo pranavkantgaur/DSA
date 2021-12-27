@@ -90,14 +90,14 @@ class LRUCache:
                 self.cache_tail.next = None
             else:
                 if key in self.hMap.keys():
-                    #print("FRAME: ", frame_node.next)
-                    assert(frame_node.next.prev)
-                    assert(frame_node.prev)
+
                     frame_node.next.prev = frame_node.prev
                 else: # the updation method has been called with a newly created framenode
-                    pass
+                    self.hMap[key] = frame_node
+                
             frame_node.next = self.cache_head
             frame_node.prev = None
+            self.cache_head.prev = frame_node
             self.cache_head = frame_node
         else:
             return # do nothing as the LRU node is already at head
@@ -108,12 +108,9 @@ class LRUCache:
         '''
         returns the value of the key if it already exists in the cache otherwise returns -1.(O(1))
         '''
-        print("GET: {}".format(key))
         if key in self.hMap.keys():
             self.update_cache_head(self.hMap[key], key) # put this node to the head
             temp = self.cache_head
-            print("After GET: ")
-            self.print_cache()
             return self.hMap[key].data
         else:
             return -1
@@ -127,18 +124,17 @@ class LRUCache:
         if the key is already present, update its value. If not present, add the key-value pair to the cache. 
         If the cache reaches its capacity it should invalidate the least recently used item before inserting the new item.
         '''
-        print("SET: {}, {}".format(key, value))
         if not self.hMap:
             frame_node = Node(value) # also sets frame_node.next = None, frame_node.prev = None
             self.hMap[key] = frame_node            
             self.current_cache_size += 1
+
         elif key in self.hMap.keys(): # key is in cache
             frame_node = self.hMap[key]
             frame_node.data = value
             self.update_cache_head(frame_node, key)
         else: # key not in cache
             frame_node = Node(value) # also sets frame_node.next = None, frame_node.prev = None
-            self.hMap[key] = frame_node
             if self.current_cache_size < self.cap:
                 self.current_cache_size += 1
             else:
@@ -151,8 +147,6 @@ class LRUCache:
                 self.hMap.pop(evicted_node_key) # remove reference to evicted node
                 del prev_tail_node # remove evicted node from cache
         self.update_cache_head(frame_node, key)    
-        print("After SET: ")
-        self.print_cache()
             
                     
                                 
