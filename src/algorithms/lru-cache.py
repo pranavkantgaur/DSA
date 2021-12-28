@@ -72,7 +72,7 @@ class LRUCache:
         #self.cache = None
         self.hMap = {}
         self.cache_head = None
-        self.cache_tail = None
+        self.cache_tail = None # points to the LRU item, for eviction
         
     def print_cache(self):
         temp = self.cache_head
@@ -80,27 +80,6 @@ class LRUCache:
             print("value: ", temp.data)
             temp = temp.next
             
-    def update_cache_head(self, frame_node, key):
-        if not self.cache_head: # empty cache, update called
-            self.cache_head = frame_node
-            self.cache_tail = frame_node
-        if frame_node is not self.cache_head: # if accessed node is not head
-            if frame_node == self.cache_tail: # is it tail?
-                self.cache_tail = frame_node.prev
-                self.cache_tail.next = None
-            else:
-                if key in self.hMap.keys():
-
-                    frame_node.next.prev = frame_node.prev
-                else: # the updation method has been called with a newly created framenode
-                    self.hMap[key] = frame_node
-                
-            frame_node.next = self.cache_head
-            frame_node.prev = None
-            self.cache_head.prev = frame_node
-            self.cache_head = frame_node
-        else:
-            return # do nothing as the LRU node is already at head
         
     #Function to return value corresponding to the key.
     def get(self, key):
@@ -108,10 +87,19 @@ class LRUCache:
         '''
         returns the value of the key if it already exists in the cache otherwise returns -1.(O(1))
         '''
-        if key in self.hMap.keys():
-            self.update_cache_head(self.hMap[key], key) # put this node to the head
-            temp = self.cache_head
-            return self.hMap[key].data
+        if self.hMap and key in self.hMap.keys():
+            #self.update_cache_head(self.hMap[key], key) # put this node to the head
+            frame_node = self.hMap[key]
+            if frame_node is not self.cache_head:
+                frame_node.prev.next = frame_node.next
+                if frame_node is self.cache_tail:
+                    self.cache_tail = frame_node.prev
+                frame_node.prev = None
+                frame_node.next = self.cache_head
+                self.cache_head.prev = frame_node
+                self.cache_head = frame_node
+            #temp = self.cache_head
+            return frame_node.data
         else:
             return -1
 
@@ -128,26 +116,46 @@ class LRUCache:
             frame_node = Node(value) # also sets frame_node.next = None, frame_node.prev = None
             self.hMap[key] = frame_node            
             self.current_cache_size += 1
+            self.cache_head = frame_node
+            self.cache_tail = frame_node
 
         elif key in self.hMap.keys(): # key is in cache
             frame_node = self.hMap[key]
             frame_node.data = value
-            self.update_cache_head(frame_node, key)
+            #self.update_cache_head(frame_node, key) # only purpose is to bring frame_node to cache_head
+            if frame_node is self.cache_head: 
+                return 
+            frame_node.prev.next = frame_node.next
+            if frame_node is self.cache_tail:
+                self.cache_tail = frame_node.prev
+            frame_node.prev = None
+            frame_node.next = self.cache_head
+            self.cache_head.prev = frame_node
+            self.cache_head = frame_node
         else: # key not in cache
             frame_node = Node(value) # also sets frame_node.next = None, frame_node.prev = None
+            #self.hMap[key] = frame_node
             if self.current_cache_size < self.cap:
                 self.current_cache_size += 1
+                self.hMap[key] = frame_node
+                frame_node.next = self.cache_head
+                self.cache_head.prev = frame_node
+                self.cache_head = frame_node
             else:
                 # evict LRU
                 prev_tail_node = self.cache_tail
-                self.cache_tail = self.cache_tail.prev
-                self.cache_tail.next = None
+                if self.cache_tail is not self.cache_head:
+                    self.cache_tail = self.cache_tail.prev
+                    self.cache_tail.next = None
                 # https://stackoverflow.com/a/13149770/985166
                 evicted_node_key = list(self.hMap.keys())[list(self.hMap.values()).index(prev_tail_node)]
                 self.hMap.pop(evicted_node_key) # remove reference to evicted node
                 del prev_tail_node # remove evicted node from cache
-        self.update_cache_head(frame_node, key)    
-            
+                self.hMap[key] = frame_node
+                frame_node.next = self.cache_head
+                self.cache_head.prev = frame_node
+                self.cache_head = frame_node
+                #self.update_cache_head(frame_node, key)
                     
                                 
                 
