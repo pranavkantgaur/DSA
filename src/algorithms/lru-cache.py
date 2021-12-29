@@ -1,112 +1,87 @@
-#User function Template for python3
-
-
 '''
-SET x y : sets the value of the key x with value y
-GET x : gets the key of x if present else returns -1.
+Input
+["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+[[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+Output
+[null, null, null, 1, null, -1, null, -1, 3, 4]
 
-
-Expected Time Complexity: O(1) for both get() and set().
-Expected Auxiliary Space: O(1) for both get() and set(). 
-
-
-Input:
-cap = 2
-Q = 2
-Queries = SET 1 2 GET 1
-Output: 2
-
-Approach:
-Cache design: 
- * Hashtable?: 
-   * capacity: hashtable of size 'cap': maintaining a var representing cap of hashtable, and a counter to represent 
-               curent size of cache
-   * get(key): Looksup the key in hashtable, if found return value else -1, o(1), if found return value and update LRU key
-   * set(key, value): 
-     * Update the value in hashtable for a key if key is found, 
-     * if key not present, check size of cache, if current_cache_size == capacity, invalidate LRU key, 
-       value and add to the hashtable(update current cache size)
-    * how to invalidate LRU key?: how to track LRU key in hashtable?
- * DoublyLinkedList Q with hashtable, H?
-  * Frame are in Q which is of capacity 'cap', H contains pointer to each node in Q
-  * capacity: keep 'cap' and 'current_size'# sets number of nodes in Q, 
-  * get(key): O(1) ?
-    * frame_node_in_cache = H[key]
-    * if frame_node is not head, remove frame_node in cache from current position and put it at the head of queue
-    * if frame_node not found in H[key], return -1
-  * set(key, value): O(1)?
-    * frame_node = H[key]
-    * if frame_node:
-      * frame_node.data = value
-      * if frame_node is not head:
-        * set frame_node as head
-    * else:
-      * if len(H) == 'cap':
-        * # evict LRU key, val from Q and H
-      * # create new node in Q with input (key, value)
-      * # set new node as head of Q
-      * # update H[ley] = new_node
-
+The functions get and put must each run in O(1) average time complexity.
+Approch-1
+0. function evictLRU():
+   # identidy the index of LRU key:value pair  # how to make this O(1) with hashmap alone?
+   # remove from cache , if hashmap: O(1)
+1. What ds to use for O(1) get and O(1) put? 
+   1.1. O(1) get or lookup -> hashtable = {key: value}-> if key in hmap return hMap[key] else, return -1 -> O(1)
+        1.1.1 O(1) for put(key, value): 
+              if key in hMap.keys() -> hMap[key] = value
+              else:
+                  if len(hMap) + 1 > capacity:
+                     evictLRU(hMap) # TODO, how to make it O(1)
+                  hMap[key] = value   
+   
+    
 '''
-
-
-# design the class in the most optimal way
 class Node:
     def __init__(self, value):
         self.next = None
         self.prev = None
         self.data = value
-
-
-
+        
 class LRUCache:
-      
-    #Constructor for initializing the cache capacity with the given value.  
-    def __init__(self,cap):
-        #code here
+
+    def __init__(self, capacity: int):
         '''
         the capacity of the cache should be intitialized.
         '''
-        self.cap = cap
+        self.cap = capacity
+        #print("Cap: ", self.cap)
         self.current_cache_size = 0
-        #self.cache = None
         self.hMap = {}
         self.cache_head = None
         self.cache_tail = None # points to the LRU item, for eviction
-        
-    def print_cache(self):
+
+    def printCache(self):
         temp = self.cache_head
+        print("Current cache: ")
         while(temp):
-            print("value: ", temp.data)
+            print(temp.data)
             temp = temp.next
+        print("REverse order:" )
+        temp = self.cache_tail
+        while(temp):
+            print(temp.data)
+            temp = temp.prev
             
-        
-    #Function to return value corresponding to the key.
-    def get(self, key):
-        #code here
+    def get(self, key: int) -> int:
         '''
         returns the value of the key if it already exists in the cache otherwise returns -1.(O(1))
         '''
-        if self.hMap and key in self.hMap.keys():
-            #self.update_cache_head(self.hMap[key], key) # put this node to the head
+        
+        if self.hMap and key in self.hMap.keys():            
             frame_node = self.hMap[key]
             if frame_node is not self.cache_head:
-                frame_node.prev.next = frame_node.next
+#                print("4: ? :" ,frame_node.prev.data)
+                frame_node.prev.next = frame_node.next                
                 if frame_node is self.cache_tail:
                     self.cache_tail = frame_node.prev
+                else:
+                    frame_node.next.prev = frame_node.prev
+                    #print("YESY check")
+                    #self.printCache()
                 frame_node.prev = None
                 frame_node.next = self.cache_head
+                #print("Check")
+                #self.printCache()
                 self.cache_head.prev = frame_node
                 self.cache_head = frame_node
-            #temp = self.cache_head
+            #self.printCache()
             return frame_node.data
         else:
-            return -1
+            #self.printCache()
+            return -1        
 
-        
-    #Function for storing key-value pair.   
-    def set(self, key, value):
-        #code here
+    def put(self, key: int, value: int) -> None:
+
         '''
         O(1)
         if the key is already present, update its value. If not present, add the key-value pair to the cache. 
@@ -124,6 +99,7 @@ class LRUCache:
             frame_node.data = value
             #self.update_cache_head(frame_node, key) # only purpose is to bring frame_node to cache_head
             if frame_node is self.cache_head: 
+    #            self.printCache()
                 return 
             frame_node.prev.next = frame_node.next
             if frame_node is self.cache_tail:
@@ -133,8 +109,7 @@ class LRUCache:
             self.cache_head.prev = frame_node
             self.cache_head = frame_node
         else: # key not in cache
-            frame_node = Node(value) # also sets frame_node.next = None, frame_node.prev = None
-            #self.hMap[key] = frame_node
+            frame_node = Node(value) # also sets frame_node.next = None, frame_node.prev = None            
             if self.current_cache_size < self.cap:
                 self.current_cache_size += 1
                 self.hMap[key] = frame_node
@@ -155,37 +130,9 @@ class LRUCache:
                 frame_node.next = self.cache_head
                 self.cache_head.prev = frame_node
                 self.cache_head = frame_node
-                #self.update_cache_head(frame_node, key)
-                    
-                                
-                
+     #   self.printCache()                   
 
-
-#{ 
-#  Driver Code Starts
-#Initial Template for Python 3
-
-if __name__ == '__main__':
-    test_cases = int(input())
-    for cases in range(test_cases):
-        cap = int(input())  # capacity of the cache
-        qry=int(input())  #number of queries
-        a = list(map(str, input().strip().split()))  # parent child info in list
-        
-        lru=LRUCache(cap)
-        
-       
-        i=0
-        q=1
-        while q<=qry:
-            qtyp=a[i]
-            
-            if qtyp=='SET':
-                lru.set(int(a[i+1]),int(a[i+2]))
-                i+=3
-            elif qtyp=='GET':
-                print(lru.get(int(a[i+1])),end=' ')
-                i+=2
-            q+=1
-        print()
-# } Driver Code Ends
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
