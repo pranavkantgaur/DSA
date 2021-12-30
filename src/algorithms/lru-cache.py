@@ -31,99 +31,81 @@ class LRUCache:
 
     def __init__(self, capacity: int):
         '''
-        the capacity of the cache should be intitialized.
+        the capacity of the cache is set.
+        the actual cache(represented as a doubly-linked-list) 
+        will be created/updated on demand and will be limited by 
+        the value in `cap` attribute of the LRUCache class.
         '''
         self.cap = capacity
-        self.current_cache_size = 0
-        self.hMap = {}
-        self.cache_head = None
-        self.cache_tail = None # points to the LRU item, for eviction
+        self.currentCacheSize = 0
+        self.cacheNodePointers = {}
+        self.cache_head = None 
+        self.cache_tail = None # points to the LRU item, for eviction(if required).
 
-    def printCache(self):
+    def printCacheContent(self):
         temp = self.cache_head
-        print("Current cache: ")
+        print("Cache(forward): ")
         while(temp):
             print(temp.data)
             temp = temp.next
-        print("REverse order:" )
+        print("Reverse order:" )
         temp = self.cache_tail
         while(temp):
             print(temp.data)
             temp = temp.prev
-            
-    def get(self, key: int) -> int:
+    
+    def lruFy(self, frame_node, is_new_node):        
         '''
-        returns the value of the key if it already exists in the cache otherwise returns -1.(O(1))
+        this method restores the LRU ordering property of cache
+        if input node is new and cache is empty:
+          it adds input node at the top and updates tail and head of cache
+        if input node is new and cache is not empty
+           if the cache capacity is not reached:
+             it adds input node at the top and ipdates cache head only
+           if cache capacity is reached:
+              it removes the tail node from cache and adds input node to the cache-head
+              also, since the tail node is removed from the cache(and also from node 
+              pointer dicitonary), it updates the tail pointer too.
+        if input node is not new:
+           if input node is at head already:
+              does nothing and returns
+           if input node is in the middle withing the cache:
+              it takes out the input node from the cache(doubly-linked-list)
+              and puts the node at the top, updating cache head pointer
+           if input node is at the end(tail):
+              it takes the node out from the cache and puts it at the head
+              updates the head pointer and tail pointer
         '''
-        
+        pass
+
+    def get(self, key: int) -> int:        
+        '''
+        checks if the key exisits in the pointer dict. it returns the data in the node
+        also updates the cache as the node corresponding to input key is now the most recently 
+        accessed node, it may update tail pointer too, in case the accessed node was at the tail
+        of the cache.
+        '''
         if self.hMap and key in self.hMap.keys():            
             frame_node = self.hMap[key]
-            if frame_node is not self.cache_head:
-                frame_node.prev.next = frame_node.next                
-                if frame_node is self.cache_tail:
-                    self.cache_tail = frame_node.prev
-                else:
-                    frame_node.next.prev = frame_node.prev
-                frame_node.prev = None
-                frame_node.next = self.cache_head
-                self.cache_head.prev = frame_node
-                self.cache_head = frame_node
+            if frame_node is not self.cache_head: # LRU is updated.
+                self.lruFy(frame_node, is_new_node = False)
             return frame_node.data
         else:
             return -1        
 
     def put(self, key: int, value: int) -> None:
-
-        '''
-        O(1)
-        if the key is already present, update its value. If not present, add the key-value pair to the cache. 
-        If the cache reaches its capacity it should invalidate the least recently used item before inserting the new item.
-        '''
         if not self.hMap:
             frame_node = Node(value) # also sets frame_node.next = None, frame_node.prev = None
-            self.hMap[key] = frame_node            
-            self.current_cache_size += 1
-            self.cache_head = frame_node
-            self.cache_tail = frame_node
-
+            self.lruFy(frame_node, is_new_node = True)
         elif key in self.hMap.keys(): # key is in cache
             frame_node = self.hMap[key]
             frame_node.data = value
-            if frame_node is self.cache_head: 
+            if frame_node is self.cache_head: # no LRU updation required.
                 return 
-            frame_node.prev.next = frame_node.next
-            if frame_node is self.cache_tail:
-                self.cache_tail = frame_node.prev
             else:
-                frame_node.next.prev = frame_node.prev
-            frame_node.prev = None
-            frame_node.next = self.cache_head
-            self.cache_head.prev = frame_node
-            self.cache_head = frame_node
+                self.updatelruFy(frame_node, is_new_node = False)
         else: # key not in cache
-            frame_node = Node(value) # also sets frame_node.next = None, frame_node.prev = None            
-            if self.current_cache_size < self.cap:
-                self.current_cache_size += 1
-                self.hMap[key] = frame_node
-                frame_node.next = self.cache_head
-                self.cache_head.prev = frame_node
-                self.cache_head = frame_node
-            else:
-                # evict LRU
-                prev_tail_node = self.cache_tail
-                if self.cache_tail is not self.cache_head:                    
-                    self.cache_tail = self.cache_tail.prev
-                    self.cache_tail.next = None
-                    frame_node.next = self.cache_head
-                    self.cache_head.prev = frame_node
-                else:
-                    self.cache_tail = frame_node  
-                # https://stackoverflow.com/a/13149770/985166                
-                evicted_node_key = list(self.hMap.keys())[list(self.hMap.values()).index(prev_tail_node)]
-                self.hMap.pop(evicted_node_key) # remove reference to evicted node
-                del prev_tail_node # remove evicted node from cache
-                self.hMap[key] = frame_node
-                self.cache_head = frame_node
+
                 
 
 # Your LRUCache object will be instantiated and called as such:
