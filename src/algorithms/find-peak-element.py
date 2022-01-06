@@ -15,6 +15,19 @@ Output: 2
       1.2. return the first peak
 2.2 Optimized:
     2.2.1. Bindary search based
+    class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        start = 0
+        end = len(nums) - 1
+        mid = (start + end) >> 1
+        
+        while(start < end):
+            if nums[mid] > nums[mid - 1] and nums[mid] > nums[mid + 1]:
+                return mid
+            elif nums[mid - 1] > nums[mid]:
+                end = mid - 1
+            elif nums[mid + 1] > nums[mid]:
+                start = mid + 1
 
 '''
 class Solution:
