@@ -30,26 +30,30 @@ Output: 2
                 start = mid + 1
 
 '''
+import math
+
 class Solution:
+    
     def findPeakElement(self, nums: List[int]) -> int:
-        if len(nums) == 1:
-            return 0
-        n = len(nums)
-        for id, num in enumerate(nums):
-            if not id:
-                if num > nums[id + 1]:
-                    return id
-                else:
-                    continue
-            if id == len(nums) - 1:
-                if num > nums[id - 1]:
-                    return id
-                else:
-                    continue
-            first = nums[id - 1]
-            last = nums[id + 1]                
-            if num > first and num > last:
-                return id
+        start = 0
+        end = len(nums) - 1       
+        while(start <= end):
+            if start == end:
+                return start
+            mid = (start + end) >> 1
+            if mid > 0:
+                left = nums[mid - 1]
             else:
-                continue
+                left =  -1.0 * math.inf
+            if mid < len(nums) - 1:    
+                right = nums[mid + 1]
+            else:
+                right = -1.0 *  math.inf
+            if nums[mid] > left and nums[mid] > right:
+                return mid
+            elif left > nums[mid]:
+                end = mid - 1
+            elif right > nums[mid]:
+                start = mid + 1
+
         
