@@ -51,4 +51,29 @@ class Solution:
         
         # return head
         return head
+    
+    # todo: CHECK FOR head = [1,2,3,4,5], n = 2
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
         
+        # initialize slow and fast pointers
+        slow = head
+        fast = head
+        
+        # inflate slow-fast window from one end, by moving fast pointer and keeping slow pointer fixed
+        node_id = 1
+        while(node_id < n):
+            fast = fast.next
+            node_id += 1
+            
+        # move the slow-fast window, untill fast does not reach the tail of the linked list
+        while fast.next is not None:
+            fast = fast.next
+            slow = slow.next
+            
+        # once fast pointer is at the tail of the linked list, remove slow.next node
+        node_to_be_deleted = slow.next
+        slow.next = node_to_be_deleted.next
+        del node_to_be_deleted
+        
+        # return head
+        return head
