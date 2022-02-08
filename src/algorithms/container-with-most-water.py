@@ -1,4 +1,6 @@
 '''
+https://leetcode.com/problems/container-with-most-water/
+
 My understanding:
 
     I start with biggest width, left = 0, right = n - 1
