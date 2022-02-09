@@ -27,13 +27,15 @@ class Solution:
                         resultList[-1].next = node2                        
                     resultList.append(node2)                                                                                  
                     node2 = node2.next
-                resultList[-1].next = node1
+                if resultList:
+                    resultList[-1].next = node1
                 resultList.append(node1)    
                 resultList[-1].next = None
                 node1 = node1.next
             #2. If list2 is not None: # at this point list1 is exhausted.
-            #   Append list2 to the result
-            if list2 is not None:
+            #   Append list2 to the result            
+            while node2 is not None:
+                resultList[-1].next = node2
                 resultList.append(node2)                
                 node2 = node2.next         
             
