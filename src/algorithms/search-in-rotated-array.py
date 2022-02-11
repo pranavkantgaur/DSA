@@ -21,23 +21,30 @@
               1. Visit mid of array: check the surface, if it is increasing, then continuie binary search logic
               2. if the surface has a dip: arr[i  -1] < arr [i ] > arr[i + 1]
                  2.1. I know that max value of increasing part is arr[i  - 1] and min value of de[]
-
-Modified binary search:
- 1. (mid = (high + low) // 2
- 2. if val == a[mid]: return mid
- 3. else:
-         Do 4
- 4. if a[mid] > a[mid + 1]: so a[mid + 1] is the smallest element of the array and a[mid] is the largest element of the array: 
-      if val > a[mid]: return -1
-      if val == a[mid]: return mid
-      else:
-         if val > a[low]: b-search in [low, mid - 1]
-         if val < a[low]: b-search in [mid + 1, high]
-    if a[mid] < a[mid + 1]: this is expected of a sorted array, continue with conventional binary search process    
-    a[mid] == a[mid + 1]: not possible
-    
-Desired TC: O(logn)                   
+Desired TC: O(logn)              
+        
 '''
 class Solution:
-    def search(self, nums: List[int], target: int) -> int:
+    def search(self, nums: List[int], target: int) -> int:        
+        low = 0, high = len(nums) -  1 
+        while(low < high):
+            mid = low + (high - low) // 2
+            if target == nums[mid]: 
+                return mid
+            if nums[mid] > nums[mid + 1]: #so a[mid + 1] is the smallest element of the array and a[mid] is the largest element of the array: 
+                if target > nums[mid]: # larger than largest
+                    return -1
+                if target < nums[mid + 1]: # smaller than smallest
+                    return -1
+                else:
+                    if target > nums[low]: 
+                        high = mid - 1
+                    if target < nums[low]: 
+                        low = mid + 1
+            if nums[mid] < nums[mid + 1]: #this is expected of a sorted array, continue with conventional binary search process:
+                if target > nums[mid]: 
+                    low = mid + 1
+                else: 
+                    high = mid - 1
+        return -1        
         
