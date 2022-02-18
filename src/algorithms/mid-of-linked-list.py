@@ -35,4 +35,13 @@ class Solution:
         
             
         '''
+        # reference: https://leetcode.com/problems/middle-of-the-linked-list/discuss/154619/C++JavaPython-Slow-and-Fast-Pointers
+        if not head:
+            return None
+        slow = head
+        fast = head
+        while(fast and fast.next):
+            slow = slow.next
+            fast = fast.next.next
+        return slow            
         
