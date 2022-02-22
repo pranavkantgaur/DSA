@@ -100,4 +100,23 @@ class Solution:
             
             #3. return head of the result list               
             return resultList[0]
+         
+         
+'''
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        while list1 and list2:
+            if list1.val > list2.val:
+                add list2.val
+                list2 = list2.next
+            else:
+                add list1.val
+                list1 = list1.next
+        while(list1):
+            add list1.val
+            list1 = list1.next
+        while(list2):
+            add list2.val
+            list2 = list2.next
+        return result
+'''
             
