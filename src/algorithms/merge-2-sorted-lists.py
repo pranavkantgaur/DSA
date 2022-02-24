@@ -102,21 +102,60 @@ class Solution:
             return resultList[0]
          
          
-'''
-    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        while list1 and list2:
+    def mergeTwoListsInPlace(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:       
+        
+        list1Node = list1[0]
+        list2Node = list2[0]
+        resultHead = None
+        resultTail = None
+        while list1Node and list2Node:
             if list1.val > list2.val:
-                add list2.val
-                list2 = list2.next
+                if resultHead: 
+                    resultTail.next = list2Node
+                    list2Node = list2Node.next
+                    resultTail.next = None                    
+                else:
+                    resultHead = list2Node
+                    resultTail = list2Node
+                    list2Node = list2Node.next
+                    resultTail.next = None
+                    
             else:
-                add list1.val
-                list1 = list1.next
-        while(list1):
-            add list1.val
-            list1 = list1.next
-        while(list2):
-            add list2.val
-            list2 = list2.next
-        return result
-'''
-            
+                if resultHead: 
+                    resultTail.next = list1Node
+                    list1Node = list1Node.next
+                    resultTail.next = None                    
+                else:
+                    resultHead = list1Node
+                    resultTail = list1Node
+                    list1Node = list1Node.next
+                    resultTail.next = None
+        if resultHead:
+            while(list1Node):            
+                resultTail.next = list1Node                
+                list1Node = list1Node.next
+                resultTail.next = None
+            while(list2Node):
+                resultTail.next = list2Node                
+                list2Node = list2Node.next
+                resultTail.next = None
+        else:
+            if list1Node:
+                resultHead = list1Node
+                resultTail = list1Node
+                list1Node = list1Node
+                while(list1Node):            
+                    resultTail.next = list1Node                
+                    list1Node = list1Node.next
+                    resultTail.next = None
+            if list2Node:
+                resultHead = list2Node
+                resultTail = list2Node
+                list2Node = list2Node
+                while(list2Node):            
+                    resultTail.next = list2Node                
+                    list2Node = list2Node.next
+                    resultTail.next = None
+                    
+                    
+        return resultHead            
