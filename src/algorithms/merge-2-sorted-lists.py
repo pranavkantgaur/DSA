@@ -101,11 +101,9 @@ class Solution:
             #3. return head of the result list               
             return resultList[0]
          
-         
-    def mergeTwoListsInPlace(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:       
-        
-        list1Node = list1[0]
-        list2Node = list2[0]
+             def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:               
+        list1Node = list1
+        list2Node = list2
         resultHead = None
         resultTail = None
         while list1Node and list2Node:
@@ -143,7 +141,7 @@ class Solution:
             if list1Node:
                 resultHead = list1Node
                 resultTail = list1Node
-                list1Node = list1Node
+                list1Node = list1Node.next
                 while(list1Node):            
                     resultTail.next = list1Node                
                     list1Node = list1Node.next
@@ -151,11 +149,10 @@ class Solution:
             if list2Node:
                 resultHead = list2Node
                 resultTail = list2Node
-                list2Node = list2Node
+                list2Node = list2Node.next
                 while(list2Node):            
                     resultTail.next = list2Node                
                     list2Node = list2Node.next
-                    resultTail.next = None
+                    resultTail.next = None                    
                     
-                    
-        return resultHead            
+        return resultHead         
