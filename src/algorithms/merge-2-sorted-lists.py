@@ -47,8 +47,8 @@ Output: [0]
 
 class Solution:
     def mergeTwoListsInPlace(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-         list1head = list1[0]
-         list2head = list2[0]
+         list1head = list1
+         list2head = list2
          resulthead = None
          resulttail = None
          while list1head and list2head:
@@ -69,9 +69,15 @@ class Solution:
                   resulttail = list2head
                   list2head = list2head.next            
          if list1head:
-            resulttail.next = list1head
+            if resulttail:
+               resulttail.next = list1head
+            else:
+               resulthead = list1head
          if list2head:
-            resulttail.next = list2head
+            if resulttail:
+               resulttail.next = list2head
+            else:
+               resulthead = list2head
          return resulthead
          
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
