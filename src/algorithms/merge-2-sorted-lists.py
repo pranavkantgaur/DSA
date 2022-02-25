@@ -13,7 +13,14 @@ https://leetcode.com/problems/merge-two-sorted-lists/discuss/9735/Python-solutio
       1.3. add node1 to the result list
    2. if there are nodes in list2 add them to result list   
    
-2. Recursive
+2. Recursive: https://leetcode.com/problems/merge-two-sorted-lists/discuss/9715/Java-1-ms-4-lines-codes-using-recursion
+   if list1 is None: return list2
+   if list2 is None: return list1
+   if l1.val < l2.val:
+      l1.next = merge2Lists(l1.next, l2)
+   else:
+      l2.next = merge2Lists(l1, l2.next)
+      
 3. Iterative, in-place:
    * Given 2 sorted lists, merge them in-place: Inplace-merging means creating merged linked-list without using additional space (i.e., SC: O(1)).
    * Maintain 3 head pointers, 1 each for part of list1, list2 remaining to be processed and 1 for result list
@@ -44,7 +51,7 @@ class Solution:
          list2head = list2[0]
          resulthead = None
          resulttail = None
-         while list1head or list2head:
+         while list1head and list2head:
             if list1head.val < list2head.val:
                if not resulthead:
                   resulthead = list1head         
@@ -61,6 +68,10 @@ class Solution:
                   resulttail.next = list2head
                   resulttail = list2head
                   list2head = list2head.next            
+         if list1head:
+            resulttail.next = list1head
+         if list2head:
+            resulttail.next = list2head
          return resulthead
          
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
@@ -99,60 +110,4 @@ class Solution:
                 node2 = node2.next         
             
             #3. return head of the result list               
-            return resultList[0]
-         
-             def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:               
-        list1Node = list1
-        list2Node = list2
-        resultHead = None
-        resultTail = None
-        while list1Node and list2Node:
-            if list1.val > list2.val:
-                if resultHead: 
-                    resultTail.next = list2Node
-                    list2Node = list2Node.next
-                    resultTail.next = None                    
-                else:
-                    resultHead = list2Node
-                    resultTail = list2Node
-                    list2Node = list2Node.next
-                    resultTail.next = None
-                    
-            else:
-                if resultHead: 
-                    resultTail.next = list1Node
-                    list1Node = list1Node.next
-                    resultTail.next = None                    
-                else:
-                    resultHead = list1Node
-                    resultTail = list1Node
-                    list1Node = list1Node.next
-                    resultTail.next = None
-        if resultHead:
-            while(list1Node):            
-                resultTail.next = list1Node                
-                list1Node = list1Node.next
-                resultTail.next = None
-            while(list2Node):
-                resultTail.next = list2Node                
-                list2Node = list2Node.next
-                resultTail.next = None
-        else:
-            if list1Node:
-                resultHead = list1Node
-                resultTail = list1Node
-                list1Node = list1Node.next
-                while(list1Node):            
-                    resultTail.next = list1Node                
-                    list1Node = list1Node.next
-                    resultTail.next = None
-            if list2Node:
-                resultHead = list2Node
-                resultTail = list2Node
-                list2Node = list2Node.next
-                while(list2Node):            
-                    resultTail.next = list2Node                
-                    list2Node = list2Node.next
-                    resultTail.next = None                    
-                    
-        return resultHead         
+            return resultList[0]    
