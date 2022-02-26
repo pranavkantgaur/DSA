@@ -45,40 +45,41 @@ Output: [0]
 
 
 
-class Solution:
-    def mergeTwoListsInPlace(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-         list1head = list1
-         list2head = list2
-         resulthead = None
-         resulttail = None
-         while list1head and list2head:
+class Solution:    
+   def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        list1head = list1
+        list2head = list2
+        resulthead = None
+        resulttail = None
+        while list1head and list2head:
             if list1head.val < list2head.val:
-               if not resulthead:
-                  resulthead = list1head         
-                  resulttail = list1head
-               else:
-                  resulttail.next = list1head
-                  resulttail = list1head
-                  list1head = list1head.next
+                if not resulthead:
+                    resulthead = list1head         
+                    resulttail = list1head
+                else:
+                    resulttail.next = list1head
+                    resulttail = list1head
+                    list1head = list1head.next
             else:
-               if not resulthead:
-                  resulthead = list2head         
-                  resulttail = list2head
-               else:
-                  resulttail.next = list2head
-                  resulttail = list2head
-                  list2head = list2head.next            
-         if list1head:
+                if not resulthead:
+                    resulthead = list2head         
+                    resulttail = list2head
+                else:
+                    resulttail.next = list2head
+                    resulttail = list2head
+                    list2head = list2head.next            
+        if list1head:
             if resulttail:
-               resulttail.next = list1head
+                resulttail.next = list1head
             else:
-               resulthead = list1head
-         if list2head:
+                resulthead = list1head
+        if list2head:
             if resulttail:
-               resulttail.next = list2head
+                resulttail.next = list2head
             else:
-               resulthead = list2head
-         return resulthead
+                resulthead = list2head
+        return resulthead
+
          
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
         if list1 is None and list2 is not None:
