@@ -3,6 +3,8 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+# https://leetcode.com/problems/merge-k-sorted-lists
+
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
         list1head = list1
@@ -41,7 +43,10 @@ class Solution:
 
     
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        merged_list = lists[0]
+        if lists:
+            merged_list = lists[0]
+        else:
+            return None
         for next_list in lists[1:]:
             merged_list = self.mergeTwoLists(merged_list, next_list)
         return merged_list  
