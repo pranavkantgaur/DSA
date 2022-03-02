@@ -4,6 +4,13 @@
 #         self.val = val
 #         self.next = next
 # https://leetcode.com/problems/merge-k-sorted-lists
+# Other solutions:
+'''
+https://leetcode.com/problems/merge-k-sorted-lists/discuss/1810642/C%2B%2B-oror-Priority-Queue-oror-23.-Merge-k-Sorted-Lists
+1. Creates a priority queue, inserting all input linked lists, sorted based on node values: HOW??
+2. Pops out elements from priority queue one at a time, building the final linked list in the process.
+TC: O(nlogk): HOW??
+'''
 
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
