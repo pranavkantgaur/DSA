@@ -8,8 +8,14 @@
 '''
 https://leetcode.com/problems/merge-k-sorted-lists/discuss/1810642/C%2B%2B-oror-Priority-Queue-oror-23.-Merge-k-Sorted-Lists
 1. Creates a priority queue, inserting all input linked lists, sorted based on node values: HOW??
+   1.1. Each node in the queue is <value, node-pointer>
+   1.2. How q.push({list->val,list}); works for priority_queue<pair<int,ListNode*>,vector<pair<int,ListNode*>>,greater<pair<int,ListNode*>>>q; ?
 2. Pops out elements from priority queue one at a time, building the final linked list in the process.
 TC: O(nlogk): HOW??
+
+Similar to our solution:
+* https://leetcode.com/problems/merge-k-sorted-lists/discuss/10531/Sharing-my-straightforward-C%2B%2B-solution-without-data-structure-other-than-vector
+
 '''
 
 class Solution:
