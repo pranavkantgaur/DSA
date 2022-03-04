@@ -24,9 +24,7 @@
 Desired TC: O(logn)              
         
 '''
-class Solution:
-    
-    
+class Solution: 
     
     def bSearch(self, low, high, target):
         if low <= high:
@@ -34,9 +32,9 @@ class Solution:
             if a[mid] == target:
                 return mid
             if a[mid] > target:
-                bSearch(low, mid - 1, target)
+                return self.bSearch(low, mid - 1, target)
             if a[mid] < target:
-                bsearch(mid + 1, high, target)
+                return self.bsearch(mid + 1, high, target)
         else:
             return -1
     
@@ -53,29 +51,34 @@ class Solution:
             if nums[mid] == target:
                 return mid
             # check for transition point
-            if nums[mid] > nums[mid - 1] and nums[mid + 1] < nums[mid]:
-                #check a[low] and a[mid - 1] wrt. target:
-                if a[mid - 1] == target:
-                    return mid - 1
-                if a[low] == target:
-                    return low
-                if a[low] < target and a[mid - 1] > target:
-                    return self.bsearch(low, mid - 1, target)
-                #check a[mid + 1] and a[high] wrt. target                
-                if a[mid + 1] == target:
-                    return mid + 1
-                if a[high] == target:
-                    retun high
-                if a[mid + 1] < target and a[high] > target:
-                    return self.bsearch(target, mid + 1, high)
-                else:
-                    return -1 # target is neither in left half nor in right half
-            else: # not a transition point
-                if a[mid] > target:
-                    return self.bsearch(low, mid - 1, target)
-                else:
-                    return self.bsearch(mid + 1, high, target)
-        
+            if mid - 1 >= 0 and mid + 1 <= len(nums) - 1:
+                if nums[mid] > nums[mid - 1] and nums[mid + 1] < nums[mid]:
+                    #check a[low] and a[mid - 1] wrt. target:
+                    if a[mid - 1] == target:
+                        return mid - 1
+                    if a[low] == target:
+                        return low
+                    if a[low] < target and a[mid - 1] > target:
+                        return self.bsearch(low, mid - 1, target)
+                    #check a[mid + 1] and a[high] wrt. target                
+                    if a[mid + 1] == target:
+                        return mid + 1
+                    if a[high] == target:
+                        retun high
+                    if a[mid + 1] < target and a[high] > target:
+                        return self.bsearch(target, mid + 1, high)
+                    else:
+                        return -1 # target is neither in left half nor in right half
+                else: # not a transition point
+                    if a[mid] > target:
+                        return self.bsearch(low, mid - 1, target)
+                    else:
+                        return self.bsearch(mid + 1, high, target)
+            else:
+                if mid - 1 < 0:
+                    # TODO
+                if mid + 1 > len(nums) - 1:
+                    #TODO        
         
    
         
