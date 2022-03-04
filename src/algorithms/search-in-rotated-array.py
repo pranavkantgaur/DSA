@@ -25,26 +25,57 @@ Desired TC: O(logn)
         
 '''
 class Solution:
-    def search(self, nums: List[int], target: int) -> int:        
-        low = 0, high = len(nums) -  1 
-        while(low < high):
+    
+    
+    
+    def bSearch(self, low, high, target):
+        if low <= high:
             mid = low + (high - low) // 2
-            if target == nums[mid]: 
+            if a[mid] == target:
                 return mid
-            if nums[mid] > nums[mid + 1]: #so a[mid + 1] is the smallest element of the array and a[mid] is the largest element of the array: 
-                if target > nums[mid]: # larger than largest
-                    return -1
-                if target < nums[mid + 1]: # smaller than smallest
-                    return -1
+            if a[mid] > target:
+                bSearch(low, mid - 1, target)
+            if a[mid] < target:
+                bsearch(mid + 1, high, target)
+        else:
+            return -1
+    
+    
+    def search(self, nums: List[int], target: int) -> int:        
+        #check if array is rotated
+        if nums[0] < nums[len(nums) - 1]:
+            return self.bsearch(0, len(nums) - 1, target)
+        #if not, array is rotated
+        else:
+            low = 0
+            high = len(nums) - 1
+            mid = low + (high - low) // 2
+            if nums[mid] == target:
+                return mid
+            # check for transition point
+            if nums[mid] > nums[mid - 1] and nums[mid + 1] < nums[mid]:
+                #check a[low] and a[mid - 1] wrt. target:
+                if a[mid - 1] == target:
+                    return mid - 1
+                if a[low] == target:
+                    return low
+                if a[low] < target and a[mid - 1] > target:
+                    return self.bsearch(low, mid - 1, target)
+                #check a[mid + 1] and a[high] wrt. target                
+                if a[mid + 1] == target:
+                    return mid + 1
+                if a[high] == target:
+                    retun high
+                if a[mid + 1] < target and a[high] > target:
+                    return self.bsearch(target, mid + 1, high)
                 else:
-                    if target > nums[low]: 
-                        high = mid - 1
-                    if target < nums[low]: 
-                        low = mid + 1
-            if nums[mid] < nums[mid + 1]: #this is expected of a sorted array, continue with conventional binary search process:
-                if target > nums[mid]: 
-                    low = mid + 1
-                else: 
-                    high = mid - 1
-        return -1        
+                    return -1 # target is neither in left half nor in right half
+            else: # not a transition point
+                if a[mid] > target:
+                    return self.bsearch(low, mid - 1, target)
+                else:
+                    return self.bsearch(mid + 1, high, target)
+        
+        
+   
         
