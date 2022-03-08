@@ -26,15 +26,17 @@ Desired TC: O(logn)
 '''
 class Solution: 
     
-    def bSearch(self, low, high, target):
+class Solution: 
+    
+    def bSearch(self, low, high, target, nums):
         if low <= high:
             mid = low + (high - low) // 2
-            if a[mid] == target:
+            if nums[mid] == target:
                 return mid
-            if a[mid] > target:
-                return self.bSearch(low, mid - 1, target)
-            if a[mid] < target:
-                return self.bsearch(mid + 1, high, target)
+            if nums[mid] > target:
+                return self.bSearch(low, mid - 1, target, nums)
+            if nums[mid] < target:
+                return self.bSearch(mid + 1, high, target, nums)
         else:
             return -1
     
@@ -42,7 +44,7 @@ class Solution:
     def search(self, nums: List[int], target: int) -> int:        
         #check if array is rotated
         if nums[0] < nums[len(nums) - 1]:
-            return self.bsearch(0, len(nums) - 1, target)
+            return self.bSearch(0, len(nums) - 1, target, nums)
         #if not, array is rotated
         else:
             low = 0
@@ -54,31 +56,37 @@ class Solution:
             if mid - 1 >= 0 and mid + 1 <= len(nums) - 1:
                 if nums[mid] > nums[mid - 1] and nums[mid + 1] < nums[mid]:
                     #check a[low] and a[mid - 1] wrt. target:
-                    if a[mid - 1] == target:
+                    if nums[mid - 1] == target:
                         return mid - 1
-                    if a[low] == target:
+                    if nums[low] == target:
                         return low
-                    if a[low] < target and a[mid - 1] > target:
-                        return self.bsearch(low, mid - 1, target)
+                    if nums[low] < target and nums[mid - 1] > target:
+                        return self.bSearch(low, mid - 1, target, nums)
                     #check a[mid + 1] and a[high] wrt. target                
-                    if a[mid + 1] == target:
+                    if nums[mid + 1] == target:
                         return mid + 1
-                    if a[high] == target:
-                        retun high
-                    if a[mid + 1] < target and a[high] > target:
-                        return self.bsearch(target, mid + 1, high)
+                    if nums[high] == target:
+                        return high
+                    if nums[mid + 1] < target and nums[high] > target:
+                        return self.bSearch(target, mid + 1, high, nums)
                     else:
                         return -1 # target is neither in left half nor in right half
                 else: # not a transition point
-                    if a[mid] > target:
-                        return self.bsearch(low, mid - 1, target)
+                    if nums[mid] > target:
+                        return self.bSearch(low, mid - 1, target, nums)
                     else:
-                        return self.bsearch(mid + 1, high, target)
+                        return self.bSearch(mid + 1, high, target, nums)
             else:
+                #print("out of bound with array length:", len(nums))
                 if mid - 1 < 0:
-                    # TODO
-                if mid + 1 > len(nums) - 1:
+                    if mid + 1 <= len(nums) - 1:
+                        if nums[mid + 1] == target:
+                            return mid + 1
+                        else:
+                            return -1
+                    else:
+                        return -1
+                #if mid + 1 > len(nums) - 1:
                     #TODO        
-        
    
         
