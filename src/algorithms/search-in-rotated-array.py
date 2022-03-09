@@ -25,13 +25,13 @@ Desired TC: O(logn)
         
 '''
 class Solution: 
-    
-class Solution: 
+    class Solution: 
     
     def bSearch(self, low, high, target, nums):
         if low <= high:
             mid = low + (high - low) // 2
             if nums[mid] == target:
+                #print("Match at: ", nums[mid], target, low, mid, high)
                 return mid
             if nums[mid] > target:
                 return self.bSearch(low, mid - 1, target, nums)
@@ -68,14 +68,39 @@ class Solution:
                     if nums[high] == target:
                         return high
                     if nums[mid + 1] < target and nums[high] > target:
-                        return self.bSearch(target, mid + 1, high, nums)
+                        return self.bSearch(mid + 1, high, target, nums)
                     else:
                         return -1 # target is neither in left half nor in right half
-                else: # not a transition point
-                    if nums[mid] > target:
+                elif nums[mid] < nums[mid - 1] and nums[mid] < nums[mid + 1]:
+                    if target == nums[low]:
+                        return low
+                    if target == nums[mid  -1]:
+                        return mid - 1
+                    if target > nums[low] and target < nums[mid - 1]:
                         return self.bSearch(low, mid - 1, target, nums)
-                    else:
+                    if target == nums[mid + 1]:
+                        return mid + 1
+                    if target == nums[high]:
+                        return high                        
+                    if target > nums[mid + 1] and target < nums[high]:
                         return self.bSearch(mid + 1, high, target, nums)
+                    else:
+                        return -1
+                else: # not a transition point
+                    # we can still run binary search on sorted part and 'modified' bsearch in the part with transition point
+                    # check for transition point in subparts on left and right of current 'mid'
+                    if nums[low] > nums[mid - 1]: # contains transition point
+                        if target >= nums[mid + 1] and target <= nums[high]:
+                            return self.bSearch(mid + 1, high, target, nums)
+                        else:
+                            return self.search(nums[low: mid], target)
+                    elif nums[mid + 1] > nums[high]: # contains transition point
+                        if target >= nums[low] and target <= nums[mid - 1]:
+                            return self.bSearch(low, mid - 1, target, nums)
+                        else:
+                            return self.search(nums[mid + 1: high + 1], target)
+                    else:
+                        return None # logically not possible
             else:
                 #print("out of bound with array length:", len(nums))
                 if mid - 1 < 0:
@@ -86,7 +111,9 @@ class Solution:
                             return -1
                     else:
                         return -1
+                else:
+                    
                 #if mid + 1 > len(nums) - 1:
-                    #TODO        
+                    #TODO     
    
         
