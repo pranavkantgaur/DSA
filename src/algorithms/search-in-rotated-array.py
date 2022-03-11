@@ -26,8 +26,7 @@ Desired TC: O(logn)
 '''
 class Solution: 
     class Solution: 
-    
-    def bSearch(self, low, high, target, nums):
+        def bSearch(self, low, high, target, nums):
         if low <= high:
             mid = low + (high - low) // 2
             if nums[mid] == target:
@@ -53,6 +52,7 @@ class Solution:
             if nums[mid] == target:
                 return mid
             # check for transition point
+            #print("MID:", mid, low, high)
             if mid - 1 >= 0 and mid + 1 <= len(nums) - 1:
                 if nums[mid] > nums[mid - 1] and nums[mid + 1] < nums[mid]:
                     #check a[low] and a[mid - 1] wrt. target:
@@ -93,27 +93,35 @@ class Solution:
                         if target >= nums[mid + 1] and target <= nums[high]:
                             return self.bSearch(mid + 1, high, target, nums)
                         else:
-                            return self.search(nums[low: mid], target)
+                            return_val = self.search(nums[low: mid], target)
+                            if return_val != -1:
+                                return low + return_val
+                            else:
+                                return -1
                     elif nums[mid + 1] > nums[high]: # contains transition point
                         if target >= nums[low] and target <= nums[mid - 1]:
                             return self.bSearch(low, mid - 1, target, nums)
                         else:
-                            return self.search(nums[mid + 1: high + 1], target)
+                            #print("check: ", nums[mid + 1: high + 1])
+                            return_val =  self.search(nums[mid + 1: high + 1], target)
+                            if return_val != -1:
+                                return mid + 1 + return_val 
+                            else:
+                                return -1
                     else:
                         return None # logically not possible
             else:
                 #print("out of bound with array length:", len(nums))
                 if mid - 1 < 0:
+                    #print("HERE")
                     if mid + 1 <= len(nums) - 1:
                         if nums[mid + 1] == target:
                             return mid + 1
                         else:
+                            #print("TES")
                             return -1
                     else:
                         return -1
                 else:
-                    
-                #if mid + 1 > len(nums) - 1:
-                    #TODO     
-   
+                  pass  
         
