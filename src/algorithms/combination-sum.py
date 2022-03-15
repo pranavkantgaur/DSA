@@ -21,9 +21,30 @@ class Solution:
                 2.1.1. At each node in state-space, if sum < target: consider all available numbers for summation 
                 2.1.2. Continue untill sum >= target
         3. Carrying out plan:
-           visit_list = []
+           visit_queue = [] 
+           # what will be the design of the queue:
+           Each node in the quue will contain: Current sequence + current sum?
+           
            result = []
            # start at root,
+           for action in actions: # initialize root of the exploration tree
+            visit_queue.push(action.value)
+           # start exploration
+           while(visit_queue):
+            visit_node = visit_queue.pop()
+            for action in actions:
+                if visit_node.sum + actions.val < target:
+                    visit_node.sum += actions.val
+                    visit_queue.push(visit_node)
+                elif visit_node.sum + actions.val == target:
+                    result.append(visit_node.sequence)
+                else:                    
+                    # discard visit_node by not re-adding it to the visit queue
+                    
+                
+           
+           
+           
            while(visit_list):
             for num in input_list: # for each available action
                 if visit_list[i].sum + num.val < target: 
