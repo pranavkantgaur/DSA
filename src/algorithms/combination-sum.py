@@ -21,14 +21,15 @@ class Solution:
                 2.1.1. At each node in state-space, if sum < target: consider all available numbers for summation 
                 2.1.2. Continue untill sum >= target
         3. Carrying out plan:
-           visit_queue = [] 
-           # what will be the design of the queue:
-           Each node in the quue will contain: Current sequence + current sum?
-           
+           visit_queue = []           
            result = []
            # start at root,
            for action in actions: # initialize root of the exploration tree
             visit_queue.push(action.value)
+            if action == target:
+                result.append(action)
+                visit_queue.pop(action)
+               
            # start exploration
            while(visit_queue):
             visit_node = visit_queue.pop()
@@ -39,24 +40,7 @@ class Solution:
                 elif visit_node.sum + actions.val == target:
                     result.append(visit_node.sequence)
                 else:                    
-                    # discard visit_node by not re-adding it to the visit queue
-                    
-                
-           
-           
-           
-           while(visit_list):
-            for num in input_list: # for each available action
-                if visit_list[i].sum + num.val < target: 
-                    visit_list[i] = visit_list[i].sum + num
-                elif visit_list[i].sum + num.val > target:
-                    visit_list.pop(i)
-                else:
-                    result_list.append(visit_list[i])
-                    # mark this combination as visited in visit_list
-                                
-                    
-                                    
+                    # discard visit_node by not re-adding it to the visit queue                                                                                                                                   
                                     
                                     
                 
