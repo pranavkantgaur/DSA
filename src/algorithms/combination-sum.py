@@ -47,3 +47,21 @@ class Solution:
         4. Looking back
         '''
         
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        '''
+        if min(candidates) > target:
+            return -1
+        if target is 0:
+            return 0
+            
+            
+        for candidate in candidates:
+            result = self.combinationSum(candidates, target - candidate)
+            for result in results:
+                if result is not -1: # no solution found with current target value                    
+                    final_result.append(result.append(candidate))
+                elif result is 0: # solution found for current target value
+                    final_result.append()
+        '''
+        
