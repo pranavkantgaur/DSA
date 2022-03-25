@@ -46,22 +46,20 @@ class Solution:
                 
         4. Looking back
         '''
-        
-class Solution:
+    state = []
+    result = []
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        '''
-        if min(candidates) > target:
-            return -1
-        if target is 0:
-            return 0
-            
-            
-        for candidate in candidates:
-            result = self.combinationSum(candidates, target - candidate)
-            for result in results:
-                if result is not -1: # no solution found with current target value                    
-                    final_result.append(result.append(candidate))
-                elif result is 0: # solution found for current target value
-                    final_result.append()
-        '''
-        
+        if target == 0:
+            return self.result
+        else:
+            for candidate in candidates:
+                if target == candidate:
+                    self.result.append(state + candidate)
+                    continue
+                if target < candidate:
+                    continue
+                else:
+                    self.state.append(candidate)
+                    self.result = self.combinatiopnSum(candidates, target - candidate)
+                self.state.pop(-1)
+            return self.result      
