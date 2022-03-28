@@ -63,3 +63,7 @@ class Solution:
                     self.result = self.combinatiopnSum(candidates, target - candidate)
                 self.state.pop(-1)
             return self.result      
+  ### This will have duplication, for which memoization has to be applied (DP based on meoization)
+      ## result variable must be a local variable fvor recursion
+  ### Another way is to think of whther a number if part of the solution or not and then moving from there(DP based on ??)
+    
