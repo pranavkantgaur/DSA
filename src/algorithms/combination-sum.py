@@ -46,24 +46,30 @@ class Solution:
                 
         4. Looking back
         '''
-    state = []
-    result = []
+   
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        if target == 0:
-            return self.result
-        else:
-            for candidate in candidates:
-                if target == candidate:
-                    self.result.append(state + candidate)
-                    continue
-                if target < candidate:
-                    continue
-                else:
-                    self.state.append(candidate)
-                    self.result = self.combinatiopnSum(candidates, target - candidate)
-                self.state.pop(-1)
-            return self.result      
-  ### This will have duplication, for which memoization has to be applied (DP based on meoization)
-      ## result variable must be a local variable fvor recursion
-  ### Another way is to think of whther a number if part of the solution or not and then moving from there(DP based on ??)
+        results = []
+        state = []
+        
+        def helper(candidates, target, state, results):
+            if target == 0:
+                return None
+            else:
+                for candidate in candidates:
+                    if candidate == target:
+                        state.append(candidate)
+                        results.append(state)
+                        state.pop(-1)
+                    elif target < candidate:
+                        continue
+                    else:
+                        #target -= candidate
+                        state.append(candidate)
+                        sub_results = helper(candidates, target - candidate, state, results)
+                        for sub_result in sub_results:
+                            if sub_result is not None:
+                                new_result = sub_result.append(state)
+                                result.append(new_result)
+                state.pop(-1)
+                return result                        
     
