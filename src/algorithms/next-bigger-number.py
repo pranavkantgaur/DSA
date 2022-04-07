@@ -22,27 +22,46 @@ Approach:
         return a
    1.3. return False        
 '''
-def findNextBiggestDigit(a, startID, endID, arr):
-  '''
-   finds next biggest number wrt a in arr between startID and endID
-  ''''
-  
-def findGreaterNum(number : str):
-  for (i = n - 1; i >= 1; i--):
-    if a[i - 1] > a[i]: 
-      continue
-    else:
-      # find k
-      k = findNextBiggestDigit(a[i - 1], i+1, n-1, a) # could be based on linear search or heap
-      # swap a[i - 1], a[k]
-      t = a[k]
-      a[k] = a[i]
-      a[i] = t    
-      # sort a[i:n]
-      a[i:n] = a[i:n].sort()
-      # return a
-      return a
-  return False    
+#User function Template for python3
+
+class Solution:
+    def getNextLargerNumber(self, value, start_id, end_id, arr):
+        # locate with bsearch
+        
+    def nextPermutation(self, N, arr):
+        # code here
+        for (i = n - 1; i <= 0; i--):
+            if arr[i - 1] > a[i]:
+                continue
+            else:
+                k = self.getNextLargerNumber(arr[i -  1], i, n - 1, arr)
+                t = a[k]
+                a[k] = a[i - 1]
+                a[i - 1] = t
+                arr[i:].sort()
+                return arr
+        return None    
+        
+
+#{ 
+#  Driver Code Starts
+#Initial Template for Python 3
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        N = int(input())
+        arr = input().split()
+        for i in range(N):
+            arr[i] = int(arr[i])
+        
+        ob = Solution()
+        ans = ob.nextPermutation(N, arr)
+        for i in range(N):
+            print(ans[i],end=" ")
+        print()
+# } Driver Code Ends
+
 '''
 TC: O(n)
 SC:
