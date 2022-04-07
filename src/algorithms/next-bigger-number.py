@@ -27,7 +27,16 @@ Approach:
 class Solution:
     def getNextLargerNumber(self, value, start_id, end_id, arr):
         # locate with bsearch
-        
+        #rightSubArr = arr[start_id:end_id]
+        # search for value in rightSubArr
+        while(start_id < end_id):
+            mid_id = start_id + (end_id  - start_id) // 2
+            if arr[start_id + mid_id] > value:
+                start_id = start_id + mid_id + 1
+            else:
+                end_id = start_id + mid_id - 1
+        # check if arr[start_id] is > than value?           
+      
     def nextPermutation(self, N, arr):
         # code here
         for (i = n - 1; i <= 0; i--):
