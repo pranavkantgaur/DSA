@@ -25,32 +25,32 @@ Approach:
 #User function Template for python3
 
 class Solution:
-    def getNextLargerNumber(self, value, start_id, end_id, arr):
-        # locate with bsearch
-        #rightSubArr = arr[start_id:end_id]
-        # search for value in rightSubArr
+    def getNextLargerNumber(self, value, start_id, end_id, arr): # 4, 3, 5, arr : [9, 7, 6]
+        # input is a sorted array(decreasing)
+        # locate a number just greater than the input number in the array
         while(start_id < end_id):
             mid_id = start_id + (end_id  - start_id) // 2
-            if arr[start_id + mid_id] > value:
-                start_id = start_id + mid_id + 1
-            else:
-                end_id = start_id + mid_id - 1
-        # check if arr[start_id] is > than value?           
+            if arr[mid_id] > value:
+                start_id = mid_id + 1
+            else: # equality is not possible for this input
+                end_id = mid_id - 1
+        # check if arr[start_id] is > than value? means start_id == end_id, always?
+        return start_id # or end_id
       
     def nextPermutation(self, N, arr):
         # code here
-        for (i = n - 1; i <= 0; i--):
-            if arr[i - 1] > a[i]:
+        #for (i = n - 1; i <= 0; i--):
+        for i in range(N - 1, -1, -1):
+            if arr[i - 1] > arr[i]:
                 continue
             else:
-                k = self.getNextLargerNumber(arr[i -  1], i, n - 1, arr)
-                t = a[k]
-                a[k] = a[i - 1]
-                a[i - 1] = t
-                arr[i:].sort()
+                k = self.getNextLargerNumber(arr[i -  1], i, N - 1, arr)
+                t = arr[k]
+                arr[k] = arr[i - 1]
+                arr[i - 1] = t
+                arr[i:] = arr[i:].sort()
                 return arr
-        return None    
-        
+        return None            
 
 #{ 
 #  Driver Code Starts
