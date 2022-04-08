@@ -48,7 +48,7 @@ class Solution:
                 t = arr[k]
                 arr[k] = arr[i - 1]
                 arr[i - 1] = t
-                arr[i:] = arr[i:].sort()
+                arr[i:] = sorted(arr[i:])
                 return arr
         return None            
 
