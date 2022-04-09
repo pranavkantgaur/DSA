@@ -35,8 +35,11 @@ class Solution:
             else: # equality is not possible for this input
                 end_id = mid_id - 1
         # check if arr[start_id] is > than value? means start_id == end_id, always?
-        return start_id # or end_id
-      
+        if arr[start_id] < value:
+            return mid_id
+        else:    
+            return start_id
+         
     def nextPermutation(self, N, arr):
         # code here
         #for (i = n - 1; i <= 0; i--):
