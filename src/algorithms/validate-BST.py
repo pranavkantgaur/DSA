@@ -9,7 +9,7 @@ class Solution:
     
     def getMaxValueBST(self, bst_root):
         '''
-        return the value of the rightmost node
+        return the value of the rightmost node in a BST
         '''
         node = bst_root
         while node.right:
@@ -18,7 +18,7 @@ class Solution:
         
     def getMinValueBST(self, bst_root):
         '''
-        return value of the leftmost node
+        return value of the leftmost node in a BST
         '''
         node = bst_root
         while node.left:
@@ -26,24 +26,21 @@ class Solution:
         return node.val            
     
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
-        if root.left is None and root.right is None: # left node
+        if root.left is None and root.right is None: # leaf node
             return True
-        '''
-        if root.left is null and root.right is not null, check if root.right.key > root.key: true else false
-        if root.left is not null and root.right is null, check if root.left.key < root.key: true else false
-        '''
-        if root.left is None and root.right:
-            if root.right.val > root.val: 
+
+        if root.left is None and root.right: # node with right child only
+            if self.isValidBST(root.right) and self.getMinValueBST(root.right) > root.val: 
                 return True 
             else:
                 return False
-        if root.left and root.right is None:
-            if root.left.val < root.val: 
+        if root.left and root.right is None: # node with left child only
+            if self.isValidBST(root.left) and self.getMaxValueBST(root.left) < root.val: 
                 return True
             else:
                 return False
         # in other cases            
-        if self.isValidBST(root.left) and self.isValidBST(root.right): 
+        if self.isValidBST(root.left) and self.isValidBST(root.right): # other cases
             if self.getMaxValueBST(root.left) < root.val and self.getMinValueBST(root.right) > root.val:
                 return True
             else:
@@ -51,4 +48,5 @@ class Solution:
         else:
             return False
             
+                    
         
