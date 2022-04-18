@@ -6,14 +6,21 @@
 #         self.left = left
 #         self.right = right
 
-def heightOfTree(root):
-    return 1 + max(heightOfTree(root.left), heightOfTree(root.right))
 
 class Solution:
+
+    def heightOfTree(self, root):
+        if not root:
+            return -1
+        return 1 + max(self.heightOfTree(root.left), self.heightOfTree(root.right))
+    
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
-        if isBalanced(root.left) and isBalanced(root.right):
-            if abs(heightOfTree(root.left) - heightOfTree(root.right)) <= 1 :
-                return True
-            else:
-                return False
-        
+        if root:
+            if self.isBalanced(root.left) and self.isBalanced(root.right):
+                if abs(self.heightOfTree(root.left) - self.heightOfTree(root.right)) <= 1 :
+                    return True
+                else:
+                    return False
+        else:
+            return True
+                
