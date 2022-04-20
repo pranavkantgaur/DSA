@@ -1,6 +1,5 @@
 '''
 https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
-
 BF: 
 0. Check if arr[0] <= target <= arr[n - 1]: if true then continue else return [-1, -1]
 1. Linearly search for the element from left to right
@@ -54,8 +53,13 @@ class Solution:
             
         
     def searchRange(self, nums: List[int], target: int) -> List[int]:
-        if nums is None or nums[0] > target or nums[-1] < target:  # sanity checks
+        if len(nums) == 0 or nums[0] > target or nums[-1] < target:  # sanity checks
             return [-1, -1]
+        if nums[0] == nums[-1]: # sanity check, if all elements are identical
+            if nums[0] == target:
+                return [0, len(nums) - 1]
+            else:
+                return [-1, -1]
         low = 0
         high = len(nums) - 1
         i = self.bsearch(low, high, target, nums)
@@ -69,14 +73,15 @@ class Solution:
                 start = i
             else:
                 k = i
+                is_bsearch_not_required = False
                 while(nums[k - 1] == target):
                     high = k - 1
                     if high == 0:
-                        #start = high
+                        is_bsearch_not_required = True
                         break
                     k = self.bsearch(low, high, target, nums)                        
-                    #start = k # TODO, make this outside while loop   
-                if k == 0:
+                    
+                if is_bsearch_not_required:
                     start = 0
                 else:
                     start = k
@@ -85,16 +90,18 @@ class Solution:
                 end = i
             else:
                 k = i
+                is_bsearch_not_required = False
+                #low = 0
+                high = len(nums) - 1 # reinit since it may have been overwritten by start finding bsearches.
                 while(nums[k + 1] == target):
                     low = k + 1
                     if low == len(nums) - 1:
-                        #end = low                        
+                        is_bsearch_not_required = True
                         break
                     k = self.bsearch(low, high, target, nums)   
-                if k == len(nums) - 1:
+                if is_bsearch_not_required:
                     end = low
                 else:
-                    end = k  # TODO, make this outside while loop  
+                    end = k  
             
-            return [start, end]
-        
+            return [start, end]        
