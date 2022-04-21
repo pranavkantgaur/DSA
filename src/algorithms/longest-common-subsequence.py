@@ -58,30 +58,30 @@ class Solution:
         # https://stackoverflow.com/a/11122355
         return [i for i, ltr in enumerate(substring) if ltr == letter]
         
-    def getNewSubstrings(self, letter, current_substrings):
+    def getNewSubstrings(self, letter, matching_substring):
         new_substrings = []
-        for substring in current_substrings:            
-            print('In substring: ', substring)
-            if letter in substring:
-                print('Letter:', letter)
-                letter_indices = self.getIndexOfLetter(letter, substring)
-                print('Found at: ', letter_indices)
-                for index in letter_indices:
-                    new_substrings.append(substring[index:])
-            else:
-                print('No letter: ', letter)
+        letter_indices = self.getIndexOfLetter(letter, matching_substring)            
+
+        for index in letter_indices:
+            new_substrings.append(matching_substring[index + 1:])
         return new_substrings                
-        
+    
+    def getMatchingSubstrings(self, letter, current_substrings):
+        matching_substrings = []
+        for substring in current_substrings:
+            if letter in substring:
+                matching_substrings.append(substring)
+        return matching_substrings
+    
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         current_substrings = [text1]
         lcs = []
         for letter in text2:
-            matching_substrings = self.getMatchingSubstrings(letter, current_substrings) # all substrings containing letter 
-            for substring in matching_substrings: # iterate over matching substrings
-                #print("Old substrings: ", current_substrings)
-                current_substrings = self.getNewSubstrings(letter, current_substrings) # get substrings of matching substrings where to continue searching of upcoming letters from text2
-                #print("New substrings: ", current_substrings)
-                lcs.append(letter)
-        print("LCS: ", lcs)
-        return len(lcs)                
-        
+            new_substrings = []
+            matching_substrings = self.getMatchingSubstrings(letter, current_substrings) # all substrings containing letter      
+            for substring in matching_substrings:
+                new_substrings.append(self.getNewSubstrings(letter, substring))
+            if len(matching_substrings): # if there was a match, we must iterate on the resulting substrings
+                current_substrings = new_substrings[0]                         
+                lcs.append(letter)                
+        return len(lcs)                        
