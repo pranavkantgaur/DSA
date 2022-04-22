@@ -23,7 +23,10 @@ Iterative string matching:
    1.0. for all substrings in current_substrings, which contain l:
         1.1. update current_substrings = getNewSubstrings(l, current_substrings)
         1.2. Append l to current lcs
-2. Return length of lcs
+2. For next letter till the last: (TODO)
+   if letter is found at index before the stating position of previous lcs candidates:
+      Do above acitviity again and update lcs candidate if length is greater
+3. Return length of lcs
 
 
 Optimization:
