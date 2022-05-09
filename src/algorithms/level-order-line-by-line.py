@@ -1,5 +1,3 @@
-# https://practice.geeksforgeeks.org/problems/level-order-traversal-line-by-line/1/
-
 #User function Template for python3
 
 '''
@@ -9,24 +7,28 @@ class Node:
         self.left = None
         self.right = None
 '''
-
+'''
+1. Visit a node: Print its value
+2. Check if no node left in the queue, print $
+3. Push children of parent in the queue
+4. Continue
+'''
 #Function to return the level order traversal line by line of a tree.
 def levelOrder(root):
     # code here
     queue = []
-    queue.append('$')
+    result = []
     queue.append(root)
     while(queue):
         node = queue.pop()
-        if node != '$':
-            print(node.data)
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
-        else:
-            if queue:
-                queue.append('$')
+        result.append(node.data)
+        if len(queue) == 0:
+            result.append('$')
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right)
+    return result
 #{ 
 #  Driver Code Starts
 #Contributed by Sudarshan Sharma
