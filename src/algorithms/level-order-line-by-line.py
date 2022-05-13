@@ -8,27 +8,55 @@ class Node:
         self.right = None
 '''
 '''
+ 1 4 N 4 2
+     
+     1
+  4     
+4   2
+
+o/p: [[1], [4], [4, 2]]
+
+
+
+       1
+    2     3
+4     5  6   7
+  8
+  
+O/P: [[1], [2, 3], [4, 5, 6, 7], [8]]  
+
+'''
+
+'''
 1. Visit a node: Print its value
 2. Check if no node left in the queue, print $
 3. Push children of parent in the queue
 4. Continue
 '''
+
 #Function to return the level order traversal line by line of a tree.
 def levelOrder(root):
     # code here
     queue = []
-    result = []
+    results = []
     queue.append(root)
-    while(queue):
+    queue.append(Node('$'))
+    results.append([root.data])
+    result = []
+    while(queue): # BFS termination condition
         node = queue.pop()
-        result.append(node.data)
-        if len(queue) == 0:
-            result.append('$')
+        if node.data == '$' and len(queue) > 0:
+            results.append(result)
+            result = []
+            #result.append('$')
+        #    queue.append(Node('$'))
         if node.left:
             queue.append(node.left)
+            result.append(node.left.data)
         if node.right:
             queue.append(node.right)
-    return result
+            result.append(node.right.data)
+    return results
 #{ 
 #  Driver Code Starts
 #Contributed by Sudarshan Sharma
