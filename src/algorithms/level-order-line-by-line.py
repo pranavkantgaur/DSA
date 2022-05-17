@@ -44,18 +44,22 @@ def levelOrder(root):
     results.append([root.data])
     result = []
     while(queue): # BFS termination condition
-        node = queue.pop()
+        node = queue.pop(0)
         if node.data == '$' and len(queue) > 0:
+            #print("GHEHRE RESULT' : ", result)
             results.append(result)
             result = []
             #result.append('$')
         #    queue.append(Node('$'))
         if node.left:
+            #print("YESYYSYS", node.left.data)
             queue.append(node.left)
             result.append(node.left.data)
+            #print("RESULKT: ", result)
         if node.right:
             queue.append(node.right)
             result.append(node.right.data)
+    #print('Results:', results)
     return results
 #{ 
 #  Driver Code Starts
