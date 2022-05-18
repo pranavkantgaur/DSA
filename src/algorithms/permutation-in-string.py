@@ -1,5 +1,5 @@
 '''
-# https://leetcode.com/problems/permutation-in-string/
+# https://leetcode.com/problems/permutation-in-string
 Approach 1:
 0. Create hashmap of s1 with count of each letter
 1. Create sliding window of length = len(s1)
@@ -18,26 +18,19 @@ Optimization:
 Approach 3: (recursive):
 
 '''
-
+import string
 class Solution:        
     def checkInclusion(self, s1: str, s2: str) -> bool:
         if len(s2) < len(s1):
-            return False
-        hMapS1 = {}
-        hMapS2 = {}
-        for letter in s1:
-            hMapS1[letter] = 0                
+            return False        
+        hMapS1 = dict.fromkeys(string.ascii_lowercase, 0)
+        hMapS2 = dict.fromkeys(string.ascii_lowercase, 0)
         for letter in s1:
             hMapS1[letter] += 1        
         start = 0
         end = len(s1) - 1
-
-        hMapS2 = {}
         temp = start
         # initililizing hashmap for s2 substring(within sliding window)
-        while(temp <= end):
-            hMapS2[s2[temp]] = 0            
-            temp += 1
         temp = start                        
         while(temp <= end):
             hMapS2[s2[temp]] += 1
