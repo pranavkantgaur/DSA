@@ -38,22 +38,29 @@ class Solution:
                     self.results.append(result)    
             return self.results                
        '''
-        def backtrack(num, nums, stack, flags, result):
-            if len(stack) == len(nums):
+    def backtrack(self, nums_length, nums, stack, result):
+            if len(stack) == nums_length:
+                #print('NUMS', nums_length, stack)
                 result.append(stack)
-                top_number = stack.pop()
-                flags[id[top_number]] = 0
-                return
+                #print('RRULKTD', result)
+                # prep for backtrack
+                stack.pop() 
+                return # backtrack
             else:
                 for num in nums:
-                    stack.push(num)
-                    flags[id[num]] = 1
-                    self.backtrack(num, nums, stack, flags, result)
+                    stack.append(num)
+                    new_nums = nums.copy()
+                    new_nums.remove(num)
+                    print('Renmi ved: ', num)
+                    print('from: ', nums)
+                    print('gives: ', new_nums)
+                    self.backtrack(nums_length, new_nums, stack, result)
             return                    
                 
-        def permute(self, nums: List[int]) -> List[List[int]]:
+    def permute(self, nums: List[int]) -> List[List[int]]:
             result = []
-            self.backtrack(nums, num, stack, flags, result)
+            stack = []            
+            self.backtrack(len(nums), nums, stack, result)
             return result
             
     
