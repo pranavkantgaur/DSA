@@ -44,16 +44,23 @@ class Solution:
                 result.append(stack)
                 #print('RRULKTD', result)
                 # prep for backtrack
+                print('Before: ', stack)
                 stack.pop() 
+                print('After: ', stack)
                 return # backtrack
             else:
                 for num in nums:
+                    print('1: ', stack)                    
                     stack.append(num)
+                    print('2: ', stack)
                     new_nums = nums.copy()
                     new_nums.remove(num)
-                    print('Renmi ved: ', num)
-                    print('from: ', nums)
-                    print('gives: ', new_nums)
+                    print('Neew new: ', stack, new_nums)
+                    #print('Renmi ved: ', num)
+                    #print('from: ', nums)
+                    #print('gives: ', new_nums)
+                    #if new_nums == [2]:
+                    #    print("CHeck!!", stack)
                     self.backtrack(nums_length, new_nums, stack, result)
             return                    
                 
