@@ -1,75 +1,32 @@
-class Solution:
-    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        '''
-        identify minimum element combination which sums to target, lets say with length 'n'
-        test all combinations of length n - 1 to check if they sum to target, if yes append to list
-        continue till n-k = len(candidates)
-        1. Understand the problem
-           1.1. Unknown? Number of combinations which sum to target
-           1.2. Data? given array of unique integers and a target integer, number of such combinations which sum to target are bounded
-                Any number of repeitions of an integer are permissable
-           1.3  Condition: ??
-           1.4. Possible to satisfy condition?:  ??
-           1.5. Condition sufficient to determine the unknown: ??
-           1.6. 
-        2. Devise plan:(DFS with backtracking(when sum >= target))
-           2.1. Find connection between data and unknown
-                Create node representing state of sum of all combinations as a list(of size 150) where list[i] represents current sum of ith combination
-                Update list for each combination by either DFS/BFS, if sum after updation goes > target, remove item from list
-                At any time, size of list is <= 150
-                If for combination i, sum == target, append the combination to result to list
-                2.1.1. At each node in state-space, if sum < target: consider all available numbers for summation 
-                2.1.2. Continue untill sum >= target
-        3. Carrying out plan:
-           visit_queue = []           
-           result = []
-           # start at root,
-           for action in actions: # initialize root of the exploration tree
-            visit_queue.push(action.value)
-            if action == target:
-                result.append(action)
-                visit_queue.pop(action)
-               
-           # start exploration
-           while(visit_queue):
-            visit_node = visit_queue.pop()
-            for action in actions:
-                if visit_node.sum + actions.val < target:
-                    visit_node.sum += actions.val
-                    visit_queue.push(visit_node)
-                elif visit_node.sum + actions.val == target:
-                    result.append(visit_node.sequence)
-                else:                    
-                    # discard visit_node by not re-adding it to the visit queue                                                                                                                                   
-                                    
-                                    
-                
-        4. Looking back
-        '''
-   
-    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        results = []
-        state = []
-        
-        def helper(candidates, target, state, results):
-            if target == 0:
-                return None
-            else:
+# https://leetcode.com/problems/combination-sum/
+from collections import Counter
+
+class Solution:      
+
+    def backtrack(self, state, candidates, target, result):
+             if target == 0:
+                temp_state = state.copy()
+                for a_state in result: # to avoid duplicates
+                    if Counter(a_state) == Counter(state):
+                        return
+                result.append(temp_state)
+                return
+             else:
                 for candidate in candidates:
-                    if candidate == target:
+                    if target - candidate >= 0:
                         state.append(candidate)
-                        results.append(state)
-                        state.pop(-1)
-                    elif target < candidate:
-                        continue
+                        self.backtrack(state, candidates, target - candidate, result)
+                        explored_value = state.pop()
                     else:
-                        #target -= candidate
-                        state.append(candidate)
-                        sub_results = helper(candidates, target - candidate, state, results)
-                        for sub_result in sub_results:
-                            if sub_result is not None:
-                                new_result = sub_result.append(state)
-                                result.append(new_result)
-                state.pop(-1)
-                return result                        
+                        continue
+                return                     
+
     
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        result = []
+        state = []
+        self.backtrack(state, candidates, target, result)
+        return result
+        
+
+        
