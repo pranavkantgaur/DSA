@@ -39,29 +39,17 @@ class Solution:
             return self.results                
        '''
     def backtrack(self, nums_length, nums, stack, result):
-            if len(stack) == nums_length:
-                #print('NUMS', nums_length, stack)
-                result.append(stack)
-                #print('RRULKTD', result)
-                # prep for backtrack
-                print('Before: ', stack)
-                stack.pop() 
-                print('After: ', stack)
+            if len(stack) == nums_length: # all numbers are now in the stack
+                temp_stack = stack.copy() # so that result list does not contain 'references' to stack(which is modified later).
+                result.append(temp_stack)
                 return # backtrack
             else:
-                for num in nums:
-                    print('1: ', stack)                    
+                for num in nums: # explore all available actions in this state
                     stack.append(num)
-                    print('2: ', stack)
                     new_nums = nums.copy()
                     new_nums.remove(num)
-                    print('Neew new: ', stack, new_nums)
-                    #print('Renmi ved: ', num)
-                    #print('from: ', nums)
-                    #print('gives: ', new_nums)
-                    #if new_nums == [2]:
-                    #    print("CHeck!!", stack)
-                    self.backtrack(nums_length, new_nums, stack, result)
+                    self.backtrack(nums_length, new_nums, stack, result) # pass reduced set of actions for downstream states
+                    stack.pop()  
             return                    
                 
     def permute(self, nums: List[int]) -> List[List[int]]:
