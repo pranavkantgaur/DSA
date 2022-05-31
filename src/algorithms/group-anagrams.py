@@ -20,16 +20,23 @@ class Solution:
         results = []
         strs = sorted(strs, key=len) # sort based on length
         print("str", strs)
+        visited = [False for string in strs]
         for index, string in enumerate(strs):
-            result = []
-            candidate_index = index + 1
-            while(candidate_index <= len(strs) - 1 and \
+            if not visited[index]:
+                visited[index] = True
+                result = []
+                candidate_index = index + 1
+                while(candidate_index <= len(strs) - 1 and \
                   len(string) == len(strs[candidate_index])):
-                if self.isAnagram(string, strs[candidate_index]):
-                    result.append(strs[candidate_index])
-                    strs.remove(strs[candidate_index])
-                else:
-                    candidate_index += 1
-            result.append(string)                        
-            results.append(result)                    
+                    if self.isAnagram(string, strs[candidate_index]):
+                        result.append(strs[candidate_index])
+                        visited[candidate_index] = True
+                        #strs.remove(strs[candidate_index])
+                    candidate_index += 1                                            
+                result.append(string)                        
+                results.append(result)   
+            else:
+                continue
+            
+                 
         return results            
