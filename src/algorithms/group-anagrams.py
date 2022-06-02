@@ -1,4 +1,5 @@
 # https://leetcode.com/problems/group-anagrams/
+# https://leetcode.com/problems/group-anagrams/discuss/19176/Share-my-short-JAVA-solution
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         stringHMap = {}
