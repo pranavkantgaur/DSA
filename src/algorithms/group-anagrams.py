@@ -36,7 +36,23 @@ class Solution:
                 result.append(string)                        
                 results.append(result)   
             else:
-                continue
-            
+                continue          
                  
         return results            
+   
+   def computeSortedString(word):
+      '''
+      sortedWord = [letter for letter]
+      '''
+   # based on hashmap of lists of strings
+   def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+      # init hashmap
+      stringHMap = {}
+      # for each string in input
+      for words in strs:
+         # set key = corresponding sorted string
+         key = sorted(word)
+         stringHMap[key].append(word)
+     # return values of the resulting hashmap 
+     return stringHMap.values()
+      
