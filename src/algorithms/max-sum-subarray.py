@@ -1,40 +1,17 @@
-# https://leetcode.com/problems/maximum-subarray/
-'''
-Iterative:
-1. if all elements of the array are +ve, return sum of array elements
-2. If all elements are -ve, return the min element
-3. Create islands of =ve nuymbers, merge +ve subarray as a single number:
-   --- + ---- + -- + (+ is a single number after merging +ve numbers, - is a -ve number)
-4. Merging +----+ if sum is greater than max(+, +)  
-
-Recursive:
-1. return max(num + maxSubArray(nums - num), maxSubArray())
-'''
+# https://leetcode.com/problems/maximum-subarray
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        return sum(nums) if all num in nums > 0
-        return min(nums) if all num in nums < 0
-        for index, num in enumerate(nums):
-            if num > 0:
-                start = index
-            if num < 0:
-                end = index
-                sum_element = sum(nums[start:end])
-                nums.remove(start:end)                
-                nums.add(start, sum_element)
+        # https://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
+        '''
+        if max(nums) < 0:
+            return max(nums)
+        '''
+        max_sum_so_far = min(nums) - 1
+        sum_so_far = 0
         for num in nums:
-            if num < 0:
-                continue
-            else:
-                if start is not None:
-                    end = index    
-                    if sum(nums[start:end] > max(nums[start], nums[end])):
-                        sum_element = sum(nums[start:end])
-                        nums.remove(start:end)
-                        nums.add(start, sum_element)
-                    start = index                        
-                else:
-                    start = index
-                    
-                
-        
+            sum_so_far += num
+            if sum_so_far > max_sum_so_far:
+                max_sum_so_far = sum_so_far
+            if sum_so_far < 0:
+                sum_so_far = 0
+        return max_sum_so_far      
