@@ -11,13 +11,15 @@
 '''
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        rows = len(matrix)
+        cols = len(matrix[0])
         TL = [0, 0]
-        TR = [0, len(matrix) - 1]
-        BL = [len(matrix[0]) - 1, 0]
-        BR = [len(matrix[0]) - 1, len(matrix) - 1]
+        TR = [0, cols - 1]
+        BL = [rows - 1, 0]
+        BR = [rows - 1, cols - 1]
         result = []
+        N = rows - 2 # TODO, fix
         for i in range(N):
-            #seed = [TL[0] + i, TL[1] + i]            
             # 2.1. Print from TL + seed_x to TR - seed_x 
             a = TL[0] + i
             b = TR[0] - i
