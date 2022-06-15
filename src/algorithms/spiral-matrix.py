@@ -23,12 +23,13 @@ class Solution:
             for j in range(rowStart, rowEnd + 1): # towards bottom
                 result.append(matrix[j][colEnd])
             colEnd -= 1
-            if colEnd >= colStart:                
-                for k in range(colEnd, colStart - 1, -1): # towards left
-                    result.append(matrix[rowEnd][k])
-                rowEnd -= 1
             if rowEnd >= rowStart:
                 for x in range(rowEnd, rowStart - 1, -1): # towards top
                     result.append(matrix[x][colStart])
-                colStart += 1                
+            colStart += 1                
+            if colEnd >= colStart:                
+                for k in range(colEnd, colStart - 1, -1): # towards left
+                    result.append(matrix[rowEnd][k])
+            rowEnd -= 1                
+                
         return result                
