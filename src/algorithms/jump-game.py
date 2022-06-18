@@ -13,8 +13,11 @@ class Solution:
             else:
                 return False
         for k in range(1, nums[0] + 1): # evaluate all actions at this state
-            if self.canJump(nums[k:]):
-                return True
+            if k < len(nums):
+                if self.canJump(nums[k:]):
+                    return True
+                else:
+                    continue
             else:
-                continue
-        return False                
+                return False
+        return False  
