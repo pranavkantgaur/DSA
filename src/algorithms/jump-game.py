@@ -5,13 +5,10 @@ for each nextpos in range(a[I]): if jumpgame(nextpos, lastpos): return true.   O
 '''
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
+        if len(nums) == 1:
+            return True
         if nums[0] == 0:
             return False
-        if len(nums)==1:
-            if nums[0] == 0:
-                return True
-            else:
-                return False
         for k in range(1, nums[0] + 1): # evaluate all actions at this state
             if k < len(nums):
                 if self.canJump(nums[k:]):
@@ -20,4 +17,4 @@ class Solution:
                     continue
             else:
                 return False
-        return False  
+        return False   
