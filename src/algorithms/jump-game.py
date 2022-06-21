@@ -20,23 +20,32 @@ class Solution:
         return False   
     
   class SolutionWithMemoization:      
-    jM = {} # set this to -1 for all positions of input array
-    
-    def canJump(self, nums: List[int]) -> bool:
-        if len(nums)==1:            
+    def jgUil(self, start, end, nums, jg_map):
+        if start ==  end:
+            jg_map[start] =  1 # true
             return True
-        if nums[0] == 0:
+        if nums[start] == 0:
+            jg_map = 0
             return False
-        for k in range(1, nums[0] + 1): # evaluate all actions at this state
-            if k <= len(nums):
-                if jM[k] != -1:
-                    if jm[k] == 1:
-                        jm[i] = 1
+        for action in range(1, nums[start] + 1):
+            if action + start <= end:
+                if jg_map[action + start] == 1:
+                    jg_map[start] = 1
+                    return True
+                if jg_map[action + start] == 0:
+                    continue
+                else:
+                    if self.jgUtil(start + action, end, nums, jg_map) == True:
+                        jg_map[start] = 1
                         return True
                     else:
-                        continue                    
-                else:
-                    jM[k] = self.canJump(nums, k, n)                    
+                        continue
             else:
-                return False
-        return False                
+                break
+        return False            
+                    
+    
+    def canJump(self, nums: List[int]) -> bool:
+        jg_map = {} #set to all -1s for len(nums), TODO
+        self.jgUtil(start, end, nums, jg_map)
+                
