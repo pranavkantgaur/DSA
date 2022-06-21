@@ -20,12 +20,12 @@ class Solution:
         return False   
     
   class SolutionWithMemoization:      
-    def jgUil(self, start, end, nums, jg_map):
+    def jgUtil(self, start, end, nums, jg_map):
         if start ==  end:
             jg_map[start] =  1 # true
             return True
         if nums[start] == 0:
-            jg_map = 0
+            jg_map[start] = 0
             return False
         for action in range(1, nums[start] + 1):
             if action + start <= end:
@@ -47,5 +47,8 @@ class Solution:
     
     def canJump(self, nums: List[int]) -> bool:
         jg_map = {} #set to all -1s for len(nums), TODO
+        # REFER: https://stackoverflow.com/questions/1298636/how-to-set-initial-size-for-a-dictionary-in-python
+        start = 0
+        end = len(nums) - 1
         self.jgUtil(start, end, nums, jg_map)
                 
