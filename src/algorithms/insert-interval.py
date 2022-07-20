@@ -1,20 +1,10 @@
 # https://leetcode.com/problems/insert-interval/
 class Solution:
     def isOverlapping(self, interval1, interval2): # [3, 8], [8, 10]
-        if interval1[1] == interval2[0]:
-            return True
-        if interval1[0] < interval2[0] and interval2[0] < interval1[1] < interval2[1]:
-            return True        
-        if interval1[0] > interval2[0] and interval1[1] < interval2[1]:
-            return True
-        if interval1[0] < interval2[0] and interval1[1] > interval2[1]:
-            return True
-        if interval2[0] < interval1[0] < interval2[1] and interval1[1] > interval2[1]:
-            return True
-        if interval1[0] == interval2[1]:
-            return True        
-        else:
+        if interval1[1] < interval2[0] or interval1[0] > interval2[1]:
             return False
+        else:
+            return True
         
     def mergeIntervals(self, interval1, interval2):
         newInterval = [min(interval1[0], interval2[0]), max(interval1[1], interval2[1])]
@@ -23,8 +13,13 @@ class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
         deletion_counter = 0
         insert_index = None
-        for index, interval in enumerate(intervals):
-            if self.isOverlapping(newInterval, interval):                 
+        
+        for index, interval in enumerate(intervals):            
+            if newInterval[1] < interval[0]: # no point in continuing further as the intervals are sorted.
+                if insert_index is None:
+                    insert_index = index
+                break
+            elif self.isOverlapping(newInterval, interval):                             
                 newInterval = self.mergeIntervals(newInterval, interval) # update newInterval
                 if deletion_counter == 0:
                     insert_index = index
@@ -37,10 +32,13 @@ class Solution:
                 intervals.pop(insert_index)
             intervals.insert(insert_index, newInterval)                
         else: # newInterval did not overlap with input intervals
-            # it should be added to either of the ends of intervals
-            if intervals[0][0] > newIntervals[1]:
+            # it can be anywhere actually
+            # start, end or somewhere in the middle
+            if insert_index is not None: # to be inserted at a specific position
+                intervals.insert(insert_index, newInterval)
+            elif len(intervals) == 0  or intervals[0][0] > newInterval[1]:
                 intervals.insert(0, newInterval)
             else:
-                intervals.insert(len(intervals) - 1, newInterval)
+                intervals.append(newInterval)
             
         return intervals
