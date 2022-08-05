@@ -4,17 +4,10 @@ class Solution:
         if m == 1 or n == 1:
             upMap[m][n] = 1
             return 
-        else:                
-            print('m, n: ', m, n)
-            if upMap[m - 1][n] != -1 and upMap[m][n-1] == -1:          
-                self.upUtils(m, n-1, upMap)
-            elif upMap[m - 1][n] == -1 and upMap[m][n-1] != -1:                          
-                self.upUtils(m - 1, n, upMap)
-            elif upMap[m - 1][n] == -1 and upMap[m][n-1] == -1:                                                                  
-                self.upUtils(m - 1, n, upMap)
-                self.upUtils(m, n - 1, upMap)            
-            upMap[m][n] = upMap[m - 1][n] + upMap[m][n - 1]
-            return 
+        for row in range(m):
+            for col in range(n):
+                upMap[m][n] = upMap[m - 1][n] + upMap[m][n - 1]
+        return                
         
     def uniquePaths(self, m: int, n: int) -> int:
         upMap = [[] for row in range(m)]        
