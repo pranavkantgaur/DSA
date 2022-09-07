@@ -8,12 +8,12 @@ class Solution:
         n = len(nums)
         # detect duplicate
         for num in nums:
-            if num > n:
-                num_index = num - bias
+            if num > n: # this position has been visited.
+                num_index = num - bias - 1
             else:
-                num_index = num
+                num_index = num - 1
             if nums[num_index] > n: # already visited once
-                duplicate = num
+                duplicate = num_index + 1
                 break
             else: # not visited yet
                 nums[num_index] += bias # mark as visited
@@ -22,5 +22,6 @@ class Solution:
         for num in nums:
             if num > n:
                 num -= bias
+        return duplicate 
                         
         
