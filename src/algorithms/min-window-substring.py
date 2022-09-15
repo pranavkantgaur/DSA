@@ -1,46 +1,35 @@
 # https://leetcode.com/problems/minimum-window-substring/class Solution:
-class Solution:
-    def advanceStartEndPtr(self, start, end, s, t_map):
-        #print('keys: ', t_map.keys())
-        #print('s', s[start])        
-        
-        while(end < len(s)):
-            if s[start] not in t_map.keys():
-                start += 1
-                end += 1
-            else:
-                break
-        #print('start: ', start) 
-        return start, end
-        
-        
+class Solution:       
     def minWindow(self, s: str, t: str) -> str:
         start = 0
-        end = len(t) - 1
+        end = len(t)
         if len(t) > len(s):
             return ""
         t_map = collections.Counter(t) # maintains count of letters in 't'
         min_start = 0
-        min_len_so_far = len(s)
-        start, end = self.advanceStartEndPtr(start, end, s, t_map)
-        #print('START: ', start)
-        #print('End: ', end)        
+        min_len_so_far = len(s) + 1 
         
-        while(end < len(s)): # TODO: infinite loop fix it
-            if collections.Counter(s[start:end]) - t_map is not None: # https://stackoverflow.com/a/52324065
-                end += 1
+        while(end < len(s)): 
+            if len(t_map - collections.Counter(s[start:end])) == 0: # https://stackoverflow.com/a/52324065
+                # update min length substring
+                print('Match: ', s[start:end])
+                if min_len_so_far > end - start:
+                    min_len_so_far = end - start
+                    min_start = start        
+                start += 1
+            if end - start > len(t) and end + 1 == len(s):
+                pass
             else:
-                if min_len_so_far > end - start + 1:
-                    min_len_so_far = end - start + 1
-                    min_start = start
-                start, end = self.advanceStartEndPtr(start, end, s, t_map)
+                end += 1                  
 
                     
-        if min_len_so_far == len(s): # no candidate substring found
+        if min_len_so_far == len(s) + 1: # no candidate substring found
             return ""
         else:
             return s[min_start:min_start + min_len_so_far]            
                     
+            
+                            
             
                     
                     
