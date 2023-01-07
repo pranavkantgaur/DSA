@@ -12,13 +12,13 @@ class Solution:
         if start_pos[0] > len(board) - 1 or start_pos[0] < 0 or start_pos[1] > len(board[0]) - 1 or start_pos[1] < 0 or word[letter_index] != board[start_pos[0]][start_pos[1]]: 
             return False
         else:
-            board[start_pos[0]][start_pos[1]] ^= chr(256)        
+            board[start_pos[0]][start_pos[1]] = chr(ord(board[start_pos[0]][start_pos[1]])^ 256)        
             neighbors = [[start_pos[0] - 1, start_pos[1]], [start_pos[0], start_pos[1] - 1], [start_pos[0], start_pos[1] + 1], [start_pos[0] + 1, start_pos[1]]]
-            for neighhbor in neighbors:
+            for neighbor in neighbors:
                 if len(board[0]) - 1 < neighbor[1] or neighbor[1] < 0 or len(board) - 1 < neighbor[0] or neighbor[0] < 0: 
                     continue
                 # else it is a valid neighbor
-                if board[neighbor[0]][neighbor[1]] & 256 == 0:
+                if ord(board[neighbor[0]][neighbor[1]]) & 256 == 0:
                     if self.helper(board, word, letter_index + 1, start_pos = neighbor) == True:
                         return True
                     else:                        
