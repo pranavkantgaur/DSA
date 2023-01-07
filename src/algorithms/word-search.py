@@ -6,19 +6,19 @@ Notes from: https://leetcode.com/problems/word-search/solutions/27658/accepted-v
 '''
 
 class Solution:
-    def helper(board, word, letter_index, start_pos):
+    def helper(self, board, word, letter_index, start_pos):
         if letter_index == len(word):
             return True
-        if start_pos[0] > len(board) - 1 or start_pos[0] < 0 or start_pos[1] > len(board[0] - 1) or start_pos[1] < 0 or word[letter_index] != board[start_pos[0]][start_pos[1]]: 
+        if start_pos[0] > len(board) - 1 or start_pos[0] < 0 or start_pos[1] > len(board[0]) - 1 or start_pos[1] < 0 or word[letter_index] != board[start_pos[0]][start_pos[1]]: 
             return False
         else:
-            visited[start_pos[0]][start_pos[1]] = True        
+            board[start_pos[0]][start_pos[1]] ^= chr(256)        
             neighbors = [[start_pos[0] - 1, start_pos[1]], [start_pos[0], start_pos[1] - 1], [start_pos[0], start_pos[1] + 1], [start_pos[0] + 1, start_pos[1]]]
             for neighhbor in neighbors:
                 if len(board[0]) - 1 < neighbor[1] or neighbor[1] < 0 or len(board) - 1 < neighbor[0] or neighbor[0] < 0: 
                     continue
                 # else it is a valid neighbor
-                if visited[neighbor[0]][neighbor[1]] == False:
+                if board[neighbor[0]][neighbor[1]] & 256 == 0:
                     if self.helper(board, word, letter_index + 1, start_pos = neighbor) == True:
                         return True
                     else:                        
@@ -29,7 +29,7 @@ class Solution:
                
        
 
-    def exist(board, word):
+    def exist(self, board, word):
         m = len(board)
         n = len(board[0])
         if len(word) > m * n:
@@ -37,9 +37,6 @@ class Solution:
         i = 0
         for row in range(m):
             for col in range(n):
-                if helper(board, word, i, start = [row, col]) == True:
+                if self.helper(board, word, i, [row, col]) == True:
                     return True
-        return False       
-    
-    
- 
+        return False
