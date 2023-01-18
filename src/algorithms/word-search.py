@@ -11,6 +11,8 @@ class Solution:
             return True
         if start_pos[0] > len(board) - 1 or start_pos[0] < 0 or start_pos[1] > len(board[0]) - 1 or start_pos[1] < 0 or word[letter_index] != board[start_pos[0]][start_pos[1]]: 
             return False
+        if letter_index == len(word) - 1:
+            return True
         else:
             board[start_pos[0]][start_pos[1]] = chr(ord(board[start_pos[0]][start_pos[1]])^ 256)        
             neighbors = [[start_pos[0] - 1, start_pos[1]], [start_pos[0], start_pos[1] - 1], [start_pos[0], start_pos[1] + 1], [start_pos[0] + 1, start_pos[1]]]
