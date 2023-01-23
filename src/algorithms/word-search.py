@@ -27,6 +27,7 @@ class Solution:
                         continue
                 else:
                     continue
+            board[start_pos[0]][start_pos[1]] = chr(ord(board[start_pos[0]][start_pos[1]])^ 256)
             return False            
                
        
