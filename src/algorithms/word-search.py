@@ -6,9 +6,7 @@ Notes from: https://leetcode.com/problems/word-search/solutions/27658/accepted-v
 '''
 
 class Solution:
-class Solution:
-    
-    
+ 
     '''
     def exist(self, board, word):
         if not board:
@@ -33,7 +31,6 @@ class Solution:
         board[i][j] = tmp
         return res
     '''
-    
     def helper(self, board, word, letter_index, start_pos):
         if letter_index == len(word):
             return True
@@ -44,8 +41,10 @@ class Solution:
         else:            
             temp = board[start_pos[0]][start_pos[1]]
             board[start_pos[0]][start_pos[1]] = '#'
-            neighbors = [[start_pos[0] - 1, start_pos[1]], [start_pos[0], start_pos[1] - 1], [start_pos[0], start_pos[1] + 1], [start_pos[0] + 1, start_pos[1]]]
-            result = self.helper(board, word, letter_index + 1, start_pos = neighbors[0]) or self.helper(board, word, letter_index + 1, start_pos = neighbors[1]) or self.helper(board, word, letter_index + 1, start_pos = neighbors[2]) or self.helper(board, word, letter_index + 1, start_pos = neighbors[3])            
+            #neighbors = [[start_pos[0] - 1, start_pos[1]], [start_pos[0], start_pos[1] - 1], [start_pos[0], start_pos[1] + 1], [start_pos[0] + 1, start_pos[1]]]
+            #result = self.helper(board, word[1:], 0, start_pos = neighbors[0]) or self.helper(board, word[1:], 0, start_pos = neighbors[1]) or self.helper(board, word[1:], 0, start_pos = neighbors[2]) or self.helper(board, word[1:], 0, start_pos = neighbors[3])            
+            result = self.helper(board, word[1:], 0, start_pos = [start_pos[0] - 1, start_pos[1]]) or self.helper(board, word[1:], 0, start_pos = [start_pos[0], start_pos[1] - 1]) or self.helper(board, word[1:], 0, start_pos = [start_pos[0], start_pos[1] + 1]) or self.helper(board, word[1:], 0, start_pos = [start_pos[0] + 1, start_pos[1]])            
+            #result = self.helper(board, word, letter_index+1, start_pos = neighbors[0]) or self.helper(board, word, letter_index+1, start_pos = neighbors[1]) or self.helper(board, word, letter_index + 1, start_pos = neighbors[2]) or self.helper(board, word, letter_index+1, start_pos = neighbors[3])            
             board[start_pos[0]][start_pos[1]] = temp            
             return result
                
@@ -62,4 +61,3 @@ class Solution:
                 if self.helper(board, word, i, [row, col]) == True:
                     return True
         return False
-          
