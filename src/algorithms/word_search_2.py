@@ -28,3 +28,25 @@ D: Remove a string from trie?
 -------
 How to use Trie and DFS to get list of words which exist over the board?
 '''
+
+class Solution:   
+    def helper(self, board: List[List[str]], x: int, y: int, words_trie: TrieNode, result: List[str]):
+        if words_trie[board[][]] is not None:
+            result.append(board[][])
+            neighbors = []
+            for neighbor in neighbors:
+                self.helper(board, neighbor_x, neighbor_y, words_trie[board[][]], result)
+        else:
+            return                
+
+    
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        result = []        
+        words_trie = TrieNode()
+        for word in words:
+            words_trie.insert(word)
+        for row in board:
+            for col in board:
+                helper(board, board_x, board_y, words_trie, result)
+        return result                
+
