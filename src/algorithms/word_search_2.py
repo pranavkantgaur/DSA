@@ -30,23 +30,36 @@ How to use Trie and DFS to get list of words which exist over the board?
 '''
 
 class Solution:   
-    def helper(self, board: List[List[str]], x: int, y: int, words_trie: TrieNode, result: List[str]):
-        if words_trie[board[][]] is not None:
-            result.append(board[][])
-            neighbors = []
+    def helper(self, board: List[List[str]], start_x: int, start_y: int, words_trie_node: TrieNode, current_string: str, result: Set[str], visited: List[bool][bool]):
+        if words_trie_node[board[start_x][start_y]] is not None:
+            current_string.append(board[start_x][start_y])
+            visited[start_x][start_y] = True
+            if words_trie_node.is_leaf == True:
+              result.insert(current_string)
+            else:
+              #continue
+              pass
+            words_trie_node = words_trie[board[start_x][start_y]]
+            neighbors = []# TODO...1            
             for neighbor in neighbors:
-                self.helper(board, neighbor_x, neighbor_y, words_trie[board[][]], result)
+                if is_valid_neighbor(neighbor) and visited[neighbor[0]][neighbor[1]] == False:
+                  self.helper(board, neighbor_x, neighbor_y, words_trie[board[][]], result)
+                else:
+                  continue
+            visited[start_x][start_y] = False                
         else:
             return                
+        return          
 
     
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
-        result = []        
+        result = Set()        
         words_trie = TrieNode()
         for word in words:
             words_trie.insert(word)
+        current_string = ""
         for row in board:
             for col in board:
-                helper(board, board_x, board_y, words_trie, result)
-        return result                
+                helper(board, board_x, board_y, words_trie.get_dummy_root(), curent_string, result)
+        return list(result)                
 
