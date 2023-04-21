@@ -59,6 +59,22 @@ class Solution:
     '''
     Trie must support: constructor, get_dummy_root(), stores hashmaps of size 26(alphabets) for each node 
     '''    
+    Class Trie():
+        def __init__(self):
+	        self.dummy_root = TrieNode()
+	
+        def insert(self, string):
+	        for letter in string:
+		        if self.trie_node[letter] is not None:
+			        trie_node = trie_node[letter]
+		        else:
+			        new_trie_node = TrieNode()
+			    trie_node[letter] = new_trie_node
+		        #If it is last letter of the string:
+                    #Trie_node[letter].is_leaf = True
+                # else:
+	                #continue
+
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         result = set()        
         visited = [[] for i in range(len(board))]
@@ -71,5 +87,4 @@ class Solution:
         for row in board:
             for col in board:
                 self.helper(board, board_x, board_y, words_trie.get_dummy_root(), curent_string, result, visited)
-        return list(result)                
-
+        return list(result)        
