@@ -30,6 +30,11 @@ How to use Trie and DFS to get list of words which exist over the board?
 '''
 
 class Solution:   
+    def is_neighbor_valid(self, neighbor, x_lim, y_lim):
+        if neighbor[0] >= 0 and neighbor[0] < x_lim and neighbor[1] >= 0 and neighbor[1] < y_lim:
+            return True
+        else:
+            return False            
     def helper(self, board: List[List[str]], start_x: int, start_y: int, words_trie_node: TrieNode, current_string: str, result: Set[str], visited: List[bool][bool]):
         if words_trie_node[board[start_x][start_y]] is not None:
             current_string.append(board[start_x][start_y])
@@ -40,7 +45,7 @@ class Solution:
               #continue
               pass
             words_trie_node = words_trie[board[start_x][start_y]]
-            neighbors = []# TODO...1            
+            neighbors = [[start_x + 1, start_y], [start_x, start_y + 1], [start_x - 1, start_y], [start_x, start_y - 1]]
             for neighbor in neighbors:
                 if is_valid_neighbor(neighbor) and visited[neighbor[0]][neighbor[1]] == False:
                   self.helper(board, neighbor_x, neighbor_y, words_trie[board[][]], result)
@@ -51,15 +56,20 @@ class Solution:
             return                
         return          
 
-    
+    '''
+    Trie must support: constructor, get_dummy_root(), stores hashmaps of size 26(alphabets) for each node 
+    '''    
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
-        result = Set()        
+        result = set()        
+        visited = [[] for i in range(len(board))]
+        for row in visited:
+            row = [False for i in range(len(board[0]))]
         words_trie = TrieNode()
         for word in words:
             words_trie.insert(word)
         current_string = ""
         for row in board:
             for col in board:
-                helper(board, board_x, board_y, words_trie.get_dummy_root(), curent_string, result)
+                self.helper(board, board_x, board_y, words_trie.get_dummy_root(), curent_string, result, visited)
         return list(result)                
 
