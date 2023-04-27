@@ -30,6 +30,35 @@ How to use Trie and DFS to get list of words which exist over the board?
 '''
 
 class Solution:   
+
+    class Trie(object):
+        class TrieNode(object):
+            def __init__(self):
+                self.alpha_map = dict.from_ascii()                
+                self.is_leaf = False
+
+        def __init__(self):
+            self.trie_root = TrieNode()
+
+        def insert(self, word):
+            current_node = self.trie_root
+            for letter in word:
+                if current_node.alpha_map[letter] is not None:
+                    current_node = current_node.alpha_map[letter]
+                else:
+                    current_node.alpha_map[letter] = TrieNode()
+                    current_node = current_node.alpha_map[letter]
+            current_node.is_leaf = True
+
+        def search(self, word):
+            current_node = self.trie_root
+            for letter in word:
+                if current_node.alpha_map[letter] is not None:
+                    current_node = current_node.alpha_map[letter]
+                else:
+                    return False
+            return True
+
     def is_neighbor_valid(self, neighbor, x_lim, y_lim):
         if neighbor[0] >= 0 and neighbor[0] < x_lim and neighbor[1] >= 0 and neighbor[1] < y_lim:
             return True
@@ -55,25 +84,6 @@ class Solution:
         else:
             return                
         return          
-
-    '''
-    Trie must support: constructor, get_dummy_root(), stores hashmaps of size 26(alphabets) for each node 
-    '''    
-    Class Trie():
-        def __init__(self):
-	        self.dummy_root = TrieNode()
-	
-        def insert(self, string):
-	        for letter in string:
-		        if self.trie_node[letter] is not None:
-			        trie_node = trie_node[letter]
-		        else:
-			        new_trie_node = TrieNode()
-			    trie_node[letter] = new_trie_node
-		        #If it is last letter of the string:
-                    #Trie_node[letter].is_leaf = True
-                # else:
-	                #continue
 
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         result = set()        
