@@ -29,55 +29,45 @@ D: Remove a string from trie?
 How to use Trie and DFS to get list of words which exist over the board?
 '''
 
+class TrieNode(object):
+    def __init__(self):
+        self.alpha_map = dict.fromkeys(string.ascii_lowercase, None)               
+        self.is_leaf = False
+
+class Trie(object):
+    def __init__(self):
+        self.trie_root = TrieNode()
+
+    def insert(self, word):
+        current_node = self.trie_root
+        for letter in word:
+            if current_node.alpha_map[letter] is not None:
+                current_node = current_node.alpha_map[letter]
+            else:
+                current_node.alpha_map[letter] = TrieNode()
+                current_node = current_node.alpha_map[letter]
+        current_node.is_leaf = True
 class Solution:   
-
-    class Trie(object):
-        class TrieNode(object):
-            def __init__(self):
-                self.alpha_map = dict.from_ascii()                
-                self.is_leaf = False
-
-        def __init__(self):
-            self.trie_root = TrieNode()
-
-        def insert(self, word):
-            current_node = self.trie_root
-            for letter in word:
-                if current_node.alpha_map[letter] is not None:
-                    current_node = current_node.alpha_map[letter]
-                else:
-                    current_node.alpha_map[letter] = TrieNode()
-                    current_node = current_node.alpha_map[letter]
-            current_node.is_leaf = True
-
-        def search(self, word):
-            current_node = self.trie_root
-            for letter in word:
-                if current_node.alpha_map[letter] is not None:
-                    current_node = current_node.alpha_map[letter]
-                else:
-                    return False
-            return True
-
-    def is_neighbor_valid(self, neighbor, x_lim, y_lim):
+    def is_valid_neighbor(self, neighbor, x_lim, y_lim):
         if neighbor[0] >= 0 and neighbor[0] < x_lim and neighbor[1] >= 0 and neighbor[1] < y_lim:
             return True
         else:
-            return False            
-    def helper(self, board: List[List[str]], start_x: int, start_y: int, words_trie_node: TrieNode, current_string: str, result: Set[str], visited: List[bool][bool]):
-        if words_trie_node[board[start_x][start_y]] is not None:
-            current_string.append(board[start_x][start_y])
+            return False   
+
+    def helper(self, board: List[List[str]], start_x: int, start_y: int, words_trie_node: TrieNode, current_string: str, result: Set[str], visited: List[List[bool]]) -> None:        
+        if words_trie_node.alpha_map[board[start_x][start_y]] is not None: # compare letter on the board with trie
+            current_string += board[start_x][start_y]            
             visited[start_x][start_y] = True
             if words_trie_node.is_leaf == True:
-              result.insert(current_string)
+              result.insert(current_string) # avoids duplicate strings
             else:
               #continue
               pass
-            words_trie_node = words_trie[board[start_x][start_y]]
+            words_trie_node = words_trie_node.alpha_map[board[start_x][start_y]]
             neighbors = [[start_x + 1, start_y], [start_x, start_y + 1], [start_x - 1, start_y], [start_x, start_y - 1]]
             for neighbor in neighbors:
-                if is_valid_neighbor(neighbor) and visited[neighbor[0]][neighbor[1]] == False:
-                  self.helper(board, neighbor_x, neighbor_y, words_trie[board[][]], result)
+                if self.is_valid_neighbor(neighbor, len(board[0]), len(board)) and visited[neighbor[0]][neighbor[1]] == False:
+                  self.helper(board, neighbor[0], neighbor[1], words_trie_node, current_string, result, visited)
                 else:
                   continue
             visited[start_x][start_y] = False                
@@ -88,13 +78,13 @@ class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         result = set()        
         visited = [[] for i in range(len(board))]
-        for row in visited:
-            row = [False for i in range(len(board[0]))]
-        words_trie = TrieNode()
+        for row in range(len(visited)):
+            visited[row] = [False for i in range(len(board[0]))]
+        words_trie = Trie()
         for word in words:
             words_trie.insert(word)
         current_string = ""
-        for row in board:
-            for col in board:
-                self.helper(board, board_x, board_y, words_trie.get_dummy_root(), curent_string, result, visited)
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                self.helper(board, row, col, words_trie.trie_root, current_string, result, visited)
         return list(result)        
