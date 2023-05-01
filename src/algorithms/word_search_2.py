@@ -47,6 +47,25 @@ class Trie(object):
                 current_node.alpha_map[letter] = TrieNode()
                 current_node = current_node.alpha_map[letter]
         current_node.is_leaf = True
+
+    def print(self):
+        print('Trie is: ')
+        queue = []
+        current_node = self.trie_root
+        print('Current node: ', current_node.alpha_map)
+        while(True):                        
+            for key in current_node.alpha_map.keys():
+                if current_node.alpha_map[key] is not None:
+                    queue.append(key)            
+                    print(key)
+                else:
+                    continue        
+            if len(queue) != 0:
+                current_node = queue.pop() # take out first element of queue
+            else:
+                break  
+        
+
 class Solution:   
     def is_valid_neighbor(self, neighbor, x_lim, y_lim):
         if neighbor[0] >= 0 and neighbor[0] < x_lim and neighbor[1] >= 0 and neighbor[1] < y_lim:
@@ -83,6 +102,7 @@ class Solution:
         words_trie = Trie()
         for word in words:
             words_trie.insert(word)
+        words_trie.print()            
         current_string = ""
         for row in range(len(board)):
             for col in range(len(board[0])):
