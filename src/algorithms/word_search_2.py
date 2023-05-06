@@ -70,28 +70,28 @@ class Trie(object):
         
 
 class Solution:   
-    def is_valid_neighbor(self, neighbor, x_lim, y_lim):
-        if neighbor[0] >= 0 and neighbor[0] < x_lim and neighbor[1] >= 0 and neighbor[1] < y_lim:
+    def is_valid_neighbor(self, neighbor, row_lim, col_lim):
+        if neighbor[0] >= 0 and neighbor[0] < row_lim and neighbor[1] >= 0 and neighbor[1] < col_lim:
             return True
         else:
             return False   
 
-    def helper(self, board: List[List[str]], start_x: int, start_y: int, words_trie_node: TrieNode, current_string: str, result: Set[str], visited: List[List[bool]]) -> None:                
-        if words_trie_node.alpha_map[board[start_x][start_y]] is not None: # compare letter on the board with trie
-            current_string += board[start_x][start_y]            
-            visited[start_x][start_y] = True
-            if words_trie_node.alpha_map[board[start_x][start_y]].is_leaf == True:
+    def helper(self, board: List[List[str]], start_row: int, start_col: int, words_trie_node: TrieNode, current_string: str, result: Set[str], visited: List[List[bool]]) -> None:                
+        if words_trie_node.alpha_map[board[start_row][start_col]] is not None: # compare letter on the board with trie
+            current_string += board[start_row][start_col]            
+            visited[start_row][start_col] = True
+            if words_trie_node.alpha_map[board[start_row][start_col]].is_leaf == True:
               result.add(current_string) # avoids duplicate strings              
             else:              
               pass
-            words_trie_node = words_trie_node.alpha_map[board[start_x][start_y]]
-            neighbors = [[start_x + 1, start_y], [start_x, start_y + 1], [start_x - 1, start_y], [start_x, start_y - 1]]
+            words_trie_node = words_trie_node.alpha_map[board[start_row][start_col]]
+            neighbors = [[start_row + 1, start_col], [start_row, start_col + 1], [start_row - 1, start_col], [start_row, start_col - 1]]
             for neighbor in neighbors:
-                if self.is_valid_neighbor(neighbor, len(board[0]), len(board)) and visited[neighbor[0]][neighbor[1]] == False:
+                if self.is_valid_neighbor(neighbor, len(board), len(board[0])) and visited[neighbor[0]][neighbor[1]] == False:
                   self.helper(board, neighbor[0], neighbor[1], words_trie_node, current_string, result, visited)
                 else:
                   continue
-            visited[start_x][start_y] = False                
+            visited[start_row][start_col] = False                
         else:
             return                
         return          
