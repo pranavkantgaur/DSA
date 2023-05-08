@@ -102,11 +102,17 @@ class Solution:
         for row in range(len(visited)):
             visited[row] = [False for i in range(len(board[0]))]
         words_trie = Trie()
+        n_rows = len(board)
+        n_cols = len(board[0])
+        board_size = n_rows * n_cols
         for word in words:
-            words_trie.insert(word)
+            if len(word) <= board_size:
+                words_trie.insert(word)
+            else:
+                continue                
         #words_trie.print()            
         current_string = ""
-        for row in range(len(board)):
-            for col in range(len(board[0])):
+        for row in range(n_rows):
+            for col in range(n_cols):
                 self.helper(board, row, col, words_trie.trie_root, current_string, result, visited)
         return list(result)        
