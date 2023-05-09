@@ -95,6 +95,19 @@ class Solution:
         else:
             return                
         return          
+    def _get_unique_letters(self, input_strings):
+        unique_letter_set = set()
+        for input_string in input_strings:            
+                if len(unique_letter_set) < 26:
+                    for letter in input_string:
+                        if len(unique_letter_set) < 26:
+                            unique_letter_set.add(letter)
+                        else:
+                            break                                    
+                else:
+                    break                            
+        return unique_letter_set
+
 
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         result = set()        
@@ -105,7 +118,11 @@ class Solution:
         n_rows = len(board)
         n_cols = len(board[0])
         board_size = n_rows * n_cols
+        # get unique letters across the board        
+        board_unique_letters = self._get_unique_letters(board)
         for word in words:
+            #word_unique_letters = self._get_unique_letters(word)
+            #if len(word) <= board_size and board_unique_letters.intersection(word_unique_letters) == word_unique_letters:
             if len(word) <= board_size:
                 words_trie.insert(word)
             else:
