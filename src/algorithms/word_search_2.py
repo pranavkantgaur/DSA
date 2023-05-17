@@ -37,6 +37,7 @@ class TrieNode(object):
 class Trie(object):
     def __init__(self):
         self.trie_root = TrieNode()
+        self.number_of_words = 0
 
     def insert(self, word):
         if len(word) == 0:
@@ -49,6 +50,7 @@ class Trie(object):
                 current_node.alpha_map[letter] = TrieNode()
                 current_node = current_node.alpha_map[letter]
         current_node.is_leaf = True
+        self.number_of_words += 1
 
     def print(self):
         print('Trie is: ')
@@ -77,11 +79,13 @@ class Solution:
             return False   
 
     def helper(self, board: List[List[str]], start_row: int, start_col: int, words_trie_node: TrieNode, current_string: str, result: Set[str], visited: List[List[bool]]) -> None:                
-        if words_trie_node.alpha_map[board[start_row][start_col]] is not None: # compare letter on the board with trie
+        if words_trie_node.alpha_map[board[start_row][start_col]] is not None and trie_obj.number_of_words > 0: # compare letter on the board with trie
             current_string += board[start_row][start_col]            
             visited[start_row][start_col] = True
             if words_trie_node.alpha_map[board[start_row][start_col]].is_leaf == True:
               result.add(current_string) # avoids duplicate strings              
+              # TODO: add number of words decrement, will require handle to the Trie object
+              trie_obj.number_of_words -= 1
             else:              
               pass
             words_trie_node = words_trie_node.alpha_map[board[start_row][start_col]]
