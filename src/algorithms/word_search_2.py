@@ -82,8 +82,8 @@ class Solution:
             current_string += board[start_row][start_col]            
             visited[start_row][start_col] = True
             if words_trie_node.alpha_map[board[start_row][start_col]].is_leaf == True:
-              result.add(current_string) # avoids duplicate strings              
-              # TODO: add number of words decrement, will require handle to the Trie object
+              result.add(current_string) # avoids duplicate strings 
+              words_trie_node.alpha_map[board[start_row][start_col]].is_leaf = False
               trie_obj.number_of_words -= 1
             else:              
               pass
