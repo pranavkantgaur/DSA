@@ -28,7 +28,6 @@ D: Remove a string from trie?
 -------
 How to use Trie and DFS to get list of words which exist over the board?
 '''
-
 class TrieNode(object):
     def __init__(self):
         self.alpha_map = dict.fromkeys(string.ascii_lowercase, None)               
@@ -78,7 +77,7 @@ class Solution:
         else:
             return False   
 
-    def helper(self, board: List[List[str]], start_row: int, start_col: int, words_trie_node: TrieNode, current_string: str, result: Set[str], visited: List[List[bool]]) -> None:                
+    def helper(self, board: List[List[str]], start_row: int, start_col: int, trie_obj: Trie, words_trie_node: TrieNode, current_string: str, result: Set[str], visited: List[List[bool]]) -> None:                
         if words_trie_node.alpha_map[board[start_row][start_col]] is not None and trie_obj.number_of_words > 0: # compare letter on the board with trie
             current_string += board[start_row][start_col]            
             visited[start_row][start_col] = True
@@ -92,7 +91,7 @@ class Solution:
             neighbors = [[start_row + 1, start_col], [start_row, start_col + 1], [start_row - 1, start_col], [start_row, start_col - 1]]
             for neighbor in neighbors:
                 if self.is_valid_neighbor(neighbor, len(board), len(board[0])) and visited[neighbor[0]][neighbor[1]] == False:
-                  self.helper(board, neighbor[0], neighbor[1], words_trie_node, current_string, result, visited)
+                  self.helper(board, neighbor[0], neighbor[1], trie_obj, words_trie_node, current_string, result, visited)
                 else:
                   continue
             visited[start_row][start_col] = False                
@@ -135,5 +134,5 @@ class Solution:
         current_string = ""
         for row in range(n_rows):
             for col in range(n_cols):
-                self.helper(board, row, col, words_trie.trie_root, current_string, result, visited)
+                self.helper(board, row, col, words_trie, words_trie.trie_root, current_string, result, visited)
         return list(result)        
