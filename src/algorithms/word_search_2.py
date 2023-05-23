@@ -1,33 +1,3 @@
-# https://leetcode.com/problems/word-search-ii
-'''
-1. Construct a trie for the input list of words
-2. For each cell in the board, traverse the trie and search for leaves:
-   * If a leaf is found during board visit, add that string to the result
-   * Else, continue
-3. If DFS is over without getting matching strings in the trie, return None
-
--------
-How to build a Trie?
-C: Create trie:
-I/P: ["aab", "aca", "aabbc", "acbcd", "dfres", "gre", "great"]
-O/P:                 root
-             a           d       g
-          a     c          f       r
-        b*      a*           r       e
-                         e             a 
-                        s*              t*
-                        
-R: Read/check if a word exists in the trie?
-* I/P: ["aab", "aca", "aabbc", "acbcd", "dfres", "gre", "great"], word = "grea"/"aa"/"res"
-* O/P: False/False/False
-U: Add a new string to trie? Update an exisiting string?
-D: Remove a string from trie?
-  * Starting from the leaf node matching the last letter of deleted string:
-    * Move up and delete all nodes which only have one descendant, untill we reach the root.
-    * If a parent with more than 1 descendant is found, STOP.
--------
-How to use Trie and DFS to get list of words which exist over the board?
-'''
 class TrieNode(object):
     def __init__(self):
         self.alpha_map = dict.fromkeys(string.ascii_lowercase, None)               
@@ -122,17 +92,21 @@ class Solution:
         n_cols = len(board[0])
         board_size = n_rows * n_cols
         # get unique letters across the board        
-        board_unique_letters = self._get_unique_letters(board)
+        #board_unique_letters = self._get_unique_letters(board)
+        import time
+        start = time.time()
         for word in words:
-            #word_unique_letters = self._get_unique_letters(word)
-            #if len(word) <= board_size and board_unique_letters.intersection(word_unique_letters) == word_unique_letters:
             if len(word) <= board_size:
                 words_trie.insert(word)
             else:
                 continue                
-        #words_trie.print()            
+        end = time.time()
+        print(f'Trie constructed in {end - start}s')
         current_string = ""
+        start = time.time()
         for row in range(n_rows):
             for col in range(n_cols):
                 self.helper(board, row, col, words_trie, words_trie.trie_root, current_string, result, visited)
+        end = time.time()
+        print(f'DFS done in {end - start}s')
         return list(result)        
