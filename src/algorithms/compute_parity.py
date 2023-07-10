@@ -12,4 +12,13 @@ Approach:
 2. return word_parities   
 
 '''
+def compute_parity(word_array):
+   hmap = compute_chunk_maps()      
+   for word in word_array:
+      word_chunks = get_word_chunks(word)
+      for chunk in word_chunks:
+         parity = hmap[chunk]
+         word_parity &= parity
+   word_parities.append(word_parity)         
+   return word_parities
 
