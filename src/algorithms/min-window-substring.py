@@ -1,7 +1,7 @@
 # https://leetcode.com/problems/minimum-window-substring/class Solution:
 class Solution:             
-    def get_first_matching_letter(self, s[start:], t_map):
-        while(letter is not in t_map):
+    def get_first_matching_letter(self, start, s, t_map):
+        while(s[start] not in t_map):
             start += 1
         return start            
 
@@ -28,19 +28,18 @@ class Solution:
         t_map = collections.Counter(t) # maintains count of letters in 't'
         min_start = 0
         min_end = len(t)                        
-        start = self.get_first_matching_letter(s[start+1:], t_map)
+        start = self.get_first_matching_letter(start, s, t_map)
         end = start + len(t) - 1
+        min_substring = ""
         while(end < len(t)):                        
-            if self.substring_matches_counter(t_map, s[start:end]):
+            if self.substring_matches_counter(s[start:end], t_map):
                 min_start, min_end = self.update_min_substring(min_start, min_end, start, end)    
+                min_substring = s[min_start:min_end]
                 start = self.get_first_matching_letter(start, s, t_map)
                 end = start + len(t) - 1                    
-                c_map = self.update_c_map(c_map, s[start])
             else:
                 end += 1                
-        else:
-            pass # just return the current solution
-        return s[min_start:min_end]                        
+        return min_substring                        
             
                     
                             
