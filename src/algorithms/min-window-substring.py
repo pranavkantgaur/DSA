@@ -6,7 +6,8 @@ class Solution:
         return start            
 
     def substring_matches_counter(self, substring, counter):
-        return Counter(substring) - counter == 0
+        #print('Check: ', bool(counter - Counter(substring)))
+        return bool(counter - Counter(substring))
     
     def update_min_substring(self, start, end, min_start, min_length):
         if end - start < min_length: 
@@ -29,16 +30,19 @@ class Solution:
         min_start = 0
         min_end = len(t)                        
         start = self.get_first_matching_letter(start, s, t_map)
+        #print('Start-1: ', start)
         end = start + len(t) - 1
         min_substring = ""
-        while(end < len(t)):                        
-            if self.substring_matches_counter(s[start:end], t_map):
+        while(end < len(s)):                        
+            if self.substring_matches_counter(s[start:end], t_map) == False:
+                #print('Matched: ', s[start:end])
                 min_start, min_end = self.update_min_substring(min_start, min_end, start, end)    
                 min_substring = s[min_start:min_end]
                 start = self.get_first_matching_letter(start, s, t_map)
                 end = start + len(t) - 1                    
             else:
-                end += 1                
+                end += 1  
+                
         return min_substring                        
             
                     
