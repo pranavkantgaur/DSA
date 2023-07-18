@@ -1,7 +1,7 @@
 # https://leetcode.com/problems/minimum-window-substring/class Solution:
 class Solution:             
     def get_first_matching_letter(self, start, s, t_map):
-        while(s[start] not in t_map):
+        while(start <= len(s) - 1 and s[start] not in t_map):
             start += 1
         return start            
 
