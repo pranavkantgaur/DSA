@@ -41,7 +41,7 @@ class Solution:
                     
 
                 
-        return min_substring                        
+        return s[min_start: min_end]                        
             
                     
                             
