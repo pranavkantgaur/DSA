@@ -1,7 +1,9 @@
 # https://leetcode.com/problems/minimum-window-substring/
+import sys
 
 class Solution:                 
-    def minWindow(self, s: str, t: str) -> str:                                               
+    def minWindow(self, s: str, t: str) -> str:                                                      
+
         t_map = collections.Counter(t) # maintains count of letters in 't'
         
         # initialize start to point to first matching letter
@@ -13,8 +15,7 @@ class Solution:
         
         # track the solution
         min_start = 0
-        min_end = len(s)                        
-        min_substring = "" # init output
+        min_end = sys.maxsize # set to an invalid window size
 
         # track candidates
         c_map = None
@@ -25,8 +26,7 @@ class Solution:
         while(end <= len(s)):                                                            
             if (t_map - c_map) == Counter():
                 if min_end - min_start > end - start:
-                    min_start, min_end = start, end
-                    min_substring = s[min_start:min_end]                
+                    min_start, min_end = start, end                                  
                 c_map[s[start]] -= 1
                 start += 1                
                 while(start <= len(s) - 1 and s[start] not in t_map):
@@ -37,19 +37,8 @@ class Solution:
                     c_map[s[end]] += 1
                 end += 1                  
                     
-        # if no candidate was found
-        if min_end - min_start == len(s):
+        # if no candidate was found        
+        if min_end == sys.maxsize:
             return ""                
         else:
-            return s[min_start: min_end]                        
-            
-                    
-                            
-            
-                    
-                    
-            
-                    
-        
-            
-        
+            return s[min_start: min_end]    
