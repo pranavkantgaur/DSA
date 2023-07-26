@@ -13,7 +13,7 @@ BF:
    2.1. If a match is found, update the lcs_len if length of subseuence is greater than the value of lcs_len, 
    2. if match is not found, continue
 3. return lcs_len   
-TC: O(max(2^m, 2^n))
+TC: O(2^m * 2^n)
 SC: O(1)
 
 
