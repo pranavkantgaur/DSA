@@ -8,10 +8,13 @@ https://leetcode.com/problems/longest-increasing-subsequence/
        1.1.2. Else: continue              
 2. Take or not-take approach: (TODO)   
     2.1. Given nums array:
-        2.1.0. If the length of array is 1: return 1 as the solution # base condition
-        2.1.1. a = Pick next element to be part of candidate solution and recursively call for sub-problem solution: a = 1 + subprob(arr[1:], last_elem = arr[0])
-        2.1.2. b = Drop next element and recursively call for sub-problem solution: b = subprob(arr[1: ], last_elem = last_elem) # not updating the last elem. with arr[0]
-    2.2. Select the max of a, b and return as output
+        2.1.0. If the length of array is 1: if last_element < a[0] or last_element == None, return 1 as the solution, else: return 0 # base condition
+        2.1.1. if a[0] > last_elem: 
+               a = Pick next element to be part of candidate solution and recursively call for sub-problem solution: a = 1 + subprob(arr[1:], last_elem = arr[0], result), 
+               b = Drop next element and recursively call for sub-problem solution: b = subprob(arr[1: ], last_elem = last_elem, result) # not updating the last elem. with arr[0]
+               Select the max of a, b and return as output
+               else: ??
+    2.2. return result 
            
 
 '''
