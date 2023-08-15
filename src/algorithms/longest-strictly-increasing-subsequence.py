@@ -21,14 +21,59 @@ https://leetcode.com/problems/longest-increasing-subsequence/
 
 
 class Solution:
-  def helper(nums, current_right_most_number, length, max_length_so_far):
-    if len(nums) == 1:
-      if current_right_most_number < nums[0]:
-        length += 1
-        if max_length_so_far < length:
-          max_length_so_far = length
-else:
-  if nums[]
-  
-  def lengthOfLIS(self, nums: List[int]) -> int:
-      self.helper(nums[1:], current_right_most_number, length + 1, max_length_so_far)
+
+    def helper(self, nums, max_length, last_element, current_length):
+        if len(nums) == 1:
+            if last_element is not None:
+                if last_element < nums[0]:
+                    current_length +=1
+                    if current_length > max_length:
+                        max_length = current_length
+                    return
+                else:
+                    return 
+            else:
+                max_length=1
+                return
+        else:
+            if last_element != None:
+                if last_element < nums[0]:
+                    # take and not-take
+                    if max_length < current_length + 1:
+                        max_length = current_length + 1 
+                    self.helper(nums[1:], max_length, last_element=nums[0], current_length = current_length+1) # take
+                    self.helper(nums[1:], max_length, last_element, current_length) # not take
+                    return
+                else:
+                    # look for a candidate number 
+                    for idx, num in enumerate(nums):
+                        if num > last_element:
+                            break
+                        else:
+                            continue
+                    if idx == len(nums) - 1:
+                        max_length += 1
+                        return
+                    else:
+                        # take and not-take
+                        if max_length < current_length + 1:
+                            max_length = current_length + 1 
+                        self.helper(nums[idx + 1:], max_length, last_element=nums[idx], current_length = current_length+1) # take
+                        self.helper(nums[idx + 1:], max_length, last_element, current_length) # not take
+                        return					
+            else:
+                        # take and not-take
+                        if max_length < current_length + 1:
+                            max_length = current_length + 1 
+                        self.helper(nums[1:], max_length, last_element=nums[0], current_length = current_length+1) # take
+                        self.helper(nums[1:], max_length, last_element, current_length) # not take
+                        return					
+                
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        last_element = None
+        current_length = 0
+        max_length = 0
+        self.helper(nums, max_length, last_element, current_length)
+        return max_length
+
+
