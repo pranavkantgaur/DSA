@@ -4,51 +4,29 @@ class Solution:
         """
         Do not return anything, modify matrix in-place instead.
         """
-        n_rows = len(matrix)
-        n_cols = len(matrix[0])        
-        row0 = -1
-        col0 = -1
-        
-        # get status of row0
-        for col in range(n_cols):
-            if matrix[0][col] == 0:
-                row0 = 0
-                break
-        # get status of col0        
-        for row in range(n_rows):
-            if matrix[row][0] == 0:
-                col0 = 0
-                break
-        # get status of rows from 1 to n - 1                
-        for row in range(1, n_rows):
-            for col in range(n_cols):
-                if matrix[row][col] == 0:
-                    matrix[row][0] = 0
-                    break
-        # get status of cols 1 to n - 1                         
-        for col in range(1, n_cols):
-            for row in range(n_rows):
-                if matrix[row][col] == 0:
-                    matrix[0][col] = 0
-                    break                        
-        # zero out rows 1 to n - 1 depending on status set earlier
-        for row in range(1, n_rows):            
-            if matrix[row][0] == 0:
-                for col in range(1 , n_cols):
-                    matrix[row][col] = 0
-        # zero out cols 1 to n - 1 depending on status set earlier
-        for col in range(1, n_cols):
-            if matrix[0][col] == 0:
-                for row in range(1 , n_rows):
-                    matrix[row][col] = 0
-        # zero out first row
-        if row0 == 0:
-            for col in range(n_cols):
-                matrix[0][col] = 0 
-        # zero out first column 
-        if col0 == 0:
-            for row in range(n_rows):
-                matrix[row][0] = 0 
+        # 1st pass, mark the rows and colms to be zeroed out in second pass.
+	    for row in range(len(matrix)):
+		    for col in range(len(matrix[0])):
+			    if matrix[row][col] == 0:
+				    matrix[row][0] ^= F0000x # set the sign bit
+				    matrix[0][col] ^= F0000x				
+	    # 11nd pass         
+	    for row in range(len(matrix)):
+		    if matrix[row][0] ^ F000x == 0x: # poll the sign bits for each row
+			    # set entire row as zeros
+			    for col in range(len(matrix[0])):
+				    matrix[row][col] = 0
+			    # reset the sign bit				
+			    matrix[row][col] ^= F000x
+							
+	    for col in range(len(matrix[0])):
+		    if matrix[0][col] ^ F000x == 0x:
+			    # set entire col as zeros
+			    for row in range(len(matrix)):
+				    matrix[row][col] = 0
+			    # reset the sign bit
+			    matrix[row][col] ^= F000x
+							
             
             
                 
