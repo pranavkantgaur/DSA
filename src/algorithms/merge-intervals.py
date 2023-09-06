@@ -1,25 +1,22 @@
 # https://leetcode.com/problems/merge-intervals/
-class Solution:
-    
-    def merge_util(self, index, intervals):
-        new_interval = [min(intervals[index][0],intervals[index + 1][0]) \
-                        , max(intervals[index][1], intervals[index + 1][1])]
-        intervals.pop(index)
-        intervals.pop(index)
-        intervals.insert(index, new_interval)
-        return
-        
-    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        # https://stackoverflow.com/a/36955637
-        intervals = sorted(intervals, key=lambda x: x[0])
-        index = 0
-        while(index + 1 < len(intervals)):
-            if intervals[index][1] >= intervals[index + 1][0] \
-            and intervals[index][0] <= intervals[index + 1][1]:
-                self.merge_util(index, intervals)
-                index -= 1            
-            index += 1                
-        return intervals                  
+'''
+Example 1:
+
+Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+Output: [[1,6],[8,10],[15,18]]
+Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
+
+Example 2:
+
+Input: intervals = [[1,4],[4,5]]
+Output: [[1,5]]
+
+
+Naive algorithm: TC-> , SC->
+1. For each interval, get list of overlapping intervals:
+   * Identify the merged interval
+   * Replace all these intervals with the merged interval.
+'''
                          
             
         
