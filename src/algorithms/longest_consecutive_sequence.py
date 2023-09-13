@@ -27,4 +27,26 @@ def func(arr):
     i += 1
     start = i # reset start and end
     end = i	
+* Forum solution: https://leetcode.com/problems/longest-consecutive-sequence/solutions/41057/simple-o-n-with-explanation-just-walk-each-streak/ , TC-> O(n), SC: O(n)
+  1. Convert input into a set
+  2. Start with the first element, y of the set and check if y+1, y+2... is there, once we find a number not present in the set, we update the end number for this sequence, do the same for start number by looking for y-1, y-2.
+  3. Once both start and end are found, update the global max and remove the numbers from the set
+  4. Repeat from 1.
+  Implementation:
+  def get_longest_seq(nums):
+    nums_set = set(nums)
+    for num in nums_set:
+      while(right_ele in nums_set):
+        id = nums_set.get_id(right_ele)
+        len += 1
+        nums_set.remove(id)
+        
+      while(left_ele in nums_set):
+        len += 1
+        id = nums_set.get_id(left_ele)
+        nums_set.remove(id)
+      
+      if len > max_len:
+        max_len = len
+    return max_len      
 '''
