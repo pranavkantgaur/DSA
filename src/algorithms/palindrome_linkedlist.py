@@ -1,32 +1,63 @@
-#class Node:
-#  def __init__(self, value, next=None):
-#    self.val = value
-#    self.next = next
-
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+# TC: O(n), SC: O(1)
 class Solution:
-  def isPalindrome(self, head):
-    # TODO: Write your code here
-    '''
-    1. Locate mid of ll
-    2. Reverse the list till mid node
-    3. Traverse and compare the remaining list with the reversed list
-    4. If each node is comparable, return set True, else set False
-    5. Reconstruct the original list
-    6. Return status
-    '''
-    mid_node = self.getLLMid(head)
-    head_reversed = self.getReversedLL(head, mid_node)
-    while(sublist_1_node and sublist_2_node and sublist_1_node.val == sublist_2_node.val):
-      sublist_1_node = sublist_1_node.next
-      sublist_2_node = sublist_2_node.next
-    is_palindrome = None
-    if sublist_1_node == None and sublist_2_node == None:
-      is_palindrome = True
-    else:
-      is_palindrome = False
+    def getMidNode(self, head):
+        slow = head
+        fast = head
+        while(fast and fast.next):
+            slow = slow.next
+            fast = fast.next.next
+        return slow            
 
-    head = self.getReversedLL(head_reversed, head)
+    def getReversedLL(self, head, last_node):
+        prev_node = None
+        current_node = head
+        while(current_node != last_node):
+            next_node = current_node.next
+            current_node.next = prev_node
+            prev_node = current_node
+            current_node = next_node
+        return prev_node # return head of reversed ll            
+
+    def getLLLength(self, head):
+        node = head
+        length = 0
+        while(node != None):            
+            length += 1
+            node = node.next
+        return length + 1            
 
 
-    return is_palindrome      
-    
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        '''
+        1. Mid of ll
+        2. Reverse ll from start to mid - 1, l1
+        3. Compare l1, l2, update boolean flag
+        4. Restore ll
+        5. Return flag
+        '''
+        mid_node = self.getMidNode(head)         
+        ll_length = self.getLLLength(head)
+        if ll_length % 2 == 0:
+            l2 = mid_node.next            
+        else:
+            l2 = mid_node
+            
+        reversed_ll_head = self.getReversedLL(head, l2)                    
+        l1 = reversed_ll_head        
+        while(l1 and l2 and l1.val == l2.val):
+            l1 = l1.next
+            l2 = l2.next
+        if not l1 and not l2:
+            is_palindrome = True
+        else:
+            is_palindrome = False
+        head = self.getReversedLL(reversed_ll_head, None)                                   
+        reversed_ll_head.next = l2
+        return is_palindrome
+
+        
