@@ -1,17 +1,12 @@
 # https://leetcode.com/problems/maximum-subarray
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        # https://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
-        '''
-        if max(nums) < 0:
-            return max(nums)
-        '''
+        cum_sum = 0
         max_sum_so_far = min(nums) - 1
-        sum_so_far = 0
-        for num in nums:
-            sum_so_far += num
-            if sum_so_far > max_sum_so_far:
-                max_sum_so_far = sum_so_far
-            if sum_so_far < 0:
-                sum_so_far = 0
-        return max_sum_so_far      
+        for i in range(len(nums)):
+            cum_sum += nums[i]
+            if cum_sum < nums[i]:
+                cum_sum = nums[i]
+            max_sum_so_far = max(max_sum_so_far, cum_sum)
+        return max_sum_so_far            
+        
