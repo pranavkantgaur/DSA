@@ -57,14 +57,7 @@ class Solution:
         
         return max(l_1, l_2)
         '''
-        dp = [] # len(strx) X m X n
-        for str_id in range(len(strs)):
-            m_n_array = []
-            m_n_array = [[] for i in range(m)]
-            for i in range(m):
-                m_n_array[i] = [[-1] for j in range(n)]
-            dp.append(m_n_array)
-        
+        dp = [[[-1 for _ in range(n)] for _ in range(m)] for _ in range(len(strs))]        
         return self.helper(strs, m,n, dp) 
 
     def helper(self, strs, m, n, dp):
@@ -72,7 +65,7 @@ class Solution:
         if len(strs) == 1:
             m1, n1 = self.get_01_count(strs[0])
             if m1 <= m and n1 <= n:
-                dp[len(strs) - 1][m][n] = 1
+                dp[len(strs) - 1][m - 1][n - 1] = 1
                 return 1
             else:
                 return 0    
@@ -81,21 +74,22 @@ class Solution:
             return 0        
         # no take
         m1, n1 = self.get_01_count(strs[0])        
-        if dp[len(strs) - 2][m][n] != -1: # no take recurse is already solved?            
-            if m > m1 and n > n1:
-                if dp[len(strs) - 2][m - m1][n - n1] != -1: # take recurse if already solved?
-                    dp[len(strs) - 1][m][n] = max(dp[len(strs) - 2][m][n], 1 + dp[len(strs) - 2][m - m1][n - n1])
-            else:
-                dp[len(strs) - 1][m][n] = dp[len(strs) - 2][m][n]           
+        if dp[len(strs) - 2][m - 1][n - 1] != -1: # no take recurse is already solved?            
+            if m1 > m or n1 > n:
+                dp[len(strs) - 1][m - 1][n - 1] = dp[len(strs) - 2][m - 1][n - 1]
+            else:    
+                if dp[len(strs) - 2][m - m1 - 1][n - n1 - 1] == -1: # take recurse if not already solved?
+                    dp[len(strs) - 2][m - m1 - 1][n - n1 - 1] = self.helper(strs[1:], m - m1, n - n1, dp)
+                dp[len(strs) - 1][m - 1][n - 1] = max(dp[len(strs) - 2][m - 1][n - 1], 1 + dp[len(strs) - 2][m - m1 - 1][n - n1 - 1])
+                           
         else:
-            dp[len(strs) - 1][m][n] = self.helper(strs[1:], m, n, dp) # solve no take recurse
-            if m > m1 and n > n1:
-                if dp[len(strs) - 2][m - m1][n - n1] != -1: # take recurse if already solved? 
-                    dp[len(strs) - 1][m][n] = max(dp[len(strs) - 2][m][n], 1 + dp[len(strs) - 2][m - m1][n - n1])
-                else:
-
-                    dp[len(strs) - 2][m - m1][n - n1] = 1 + self.helper(strs[1:], m - m1, n - n1, dp)    
-            else:
-                dp[len(strs) - 1][m][n] = dp[len(strs) - 2][m][n]           
+            dp[len(strs) - 2][m - 1][n - 1] = self.helper(strs[1:], m, n, dp) # solve no take recurse
+            if m < m1 or n < n1:
+                dp[len(strs) - 1][m - 1][n - 1] = dp[len(strs) - 2][m - 1][n - 1]
+            else:    
+                #print('A: ', len(strs) - 2, m - m1, n - n1)
+                if dp[len(strs) - 2][m - m1 - 1][n - n1 - 1] == -1: # take recurse if already solved? 
+                    dp[len(strs) - 2][m - m1 - 1][n - n1 - 1] = self.helper(strs[1:], m - m1, n - n1, dp)
+                dp[len(strs) - 1][m - 1][n - 1] = max(dp[len(strs) - 2][m - 1][n - 1], 1 + dp[len(strs) - 2][m - m1 - 1][n - n1  -1])                         
         
-        return dp[len(strs) - 1][m][n]     
+        return dp[len(strs) - 1][m - 1][n - 1]     
