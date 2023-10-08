@@ -1,4 +1,6 @@
 # https://leetcode.com/problems/ones-and-zeroes/
+# Counter example for suboptimal value/ weight greedy strategy: https://cs.stackexchange.com/a/141289
+# It seems that in general, if the v/w values are close and selecting based on v/w results in weight quota wastage then that will be a counter example.
 class Solution:
     
 
