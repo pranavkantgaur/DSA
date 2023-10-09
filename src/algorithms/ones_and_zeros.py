@@ -2,6 +2,20 @@
 # Counter example for suboptimal value/ weight greedy strategy: https://cs.stackexchange.com/a/141289
 # It seems that in general, if the v/w values are close and selecting based on v/w results in weight quota wastage then that will be a counter example.
 # For this problem, whether prioritising string with smallest positive difference of fraction of 0/1 - m/n , is an optimal greedy criteria?
+'''
+Memoization:
+if prob is invalid: return 0
+if m < 0 or n < 0: return 0
+if prob is a;readt solved: return dp array value
+if dp[strr][m][n] != -1: return dp[strr][m][n]
+else:
+include = 1 + sub(dp, strr[1:], m - zeros, n - ones)
+solve: include and exclude
+exclude = sub(dp, strr[1: ], m, n)
+dp[str][m][n] = max(include, exclude)
+return dp[strr][m][n]
+'''
+
 class Solution:
     
 
