@@ -3,27 +3,25 @@
 class Solution:
   def findSubarrays(self, arr, target):
     result = []
-    # TODO: Write your code here
+    left = 0
+    right = 0
     '''
-    1. start  =0, end  = 0
-    2. grow the window untill prod < t
-    3. once prod >= t, start += 1 : add all subarrays between start-end
-    4. repeat 2-3 untill end <= len(arr) - 1
+    1. Iterate on each right indenx
+    2. For each resulting left,right, check if thr prod < T 
+    3. if prod >= t, squeeze the window untill the prod < T
+    4. Once the prod < T, add all subarrays within it to the result list
+    5. return result
     '''
-    start = 0
-    end = 0
-    prod = 1
-    result = []
-    while(end <= len(arr) - 1):
-      prod *= arr[end]
-      if prod < target:
-        result.append(arr[start:end + 1])  
-        end += 1
-      else:
-        prod /= arr[start]  # TODO: divide by 0, if 1st num > target          
-        start += 1
-        for last_id in range(start, end+1):          
-          result.append(arr[start:last_id+1])
-        end += 1                  
-        
+    prod = 1.0
+    while(right < len(arr)):
+      prod *= arr[right]
+      while(prod >= target and left < len(arr)): # purge invalid candidates
+        prod /= arr[left]
+        left += 1
+      # now we have a candidate window
+      i = right
+      while(i >= left):
+        result.append(arr[i:right + 1])        
+        i -= 1
+      right += 1        
     return result
