@@ -6,6 +6,13 @@
 
 
 
+#class Node:
+#  def __init__(self, value, next=None):
+#    self.val = value
+#    self.next = next
+
+
+
 class Solution:
   def reverse(self, head):
     prev = None
@@ -35,6 +42,7 @@ class Solution:
       slow = slow.next
       fast = fast.next.next
     rev_head = self.reverse(slow)      
+    
     head_copy = head
     while(head_copy and rev_head):
       t = head_copy.next
@@ -43,7 +51,9 @@ class Solution:
       rev_head.next = t
       head_copy = t
       rev_head = q
-      if t == q:
-        break
-    #head = head_copy
+    
+    if head_copy:
+      head_copy.next = None      
+  
+    
     return head
