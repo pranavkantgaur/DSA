@@ -4,60 +4,39 @@
 #         self.val = val
 #         self.next = next
 # TC: O(n), SC: O(1)
+#class Node:
+#  def __init__(self, value, next=None):
+#    self.val = value
+#    self.next = next
+
 class Solution:
-    def getMidNode(self, head):
-        slow = head
-        fast = head
-        while(fast and fast.next):
-            slow = slow.next
-            fast = fast.next.next
-        return slow            
+  def reverseLL(self, head):
+    prev = None
+    while(head):
+      t = head.next
+      head.next = prev
+      prev = head
+      head = t
+    return prev
 
-    def getReversedLL(self, head, last_node):
-        prev_node = None
-        current_node = head
-        while(current_node != last_node):
-            next_node = current_node.next
-            current_node.next = prev_node
-            prev_node = current_node
-            current_node = next_node
-        return prev_node # return head of reversed ll            
+  def isPalindrome(self, head):
+    slow = head
+    fast = head
+    while(fast and fast.next): # get mid node
+      slow = slow.next
+      fast = fast.next.next
+    reversed_head = self.reverseLL(slow)
+    while(reversed_head and head): # palindrome check
+      if reversed_head.val != head.val:
+        break
+      reversed_head = reversed_head.next
+      head = head.next
 
-    def getLLLength(self, head):
-        node = head
-        length = 0
-        while(node != None):            
-            length += 1
-            node = node.next
-        return length + 1            
+    #reversed_head = self.reverseLL(reversed_head)
 
-
-    def isPalindrome(self, head: Optional[ListNode]) -> bool:
-        '''
-        1. Mid of ll
-        2. Reverse ll from start to mid - 1, l1
-        3. Compare l1, l2, update boolean flag
-        4. Restore ll
-        5. Return flag
-        '''
-        mid_node = self.getMidNode(head)         
-        ll_length = self.getLLLength(head)
-        if ll_length % 2 == 0:
-            l2 = mid_node.next            
-        else:
-            l2 = mid_node
-            
-        reversed_ll_head = self.getReversedLL(head, l2)                    
-        l1 = reversed_ll_head        
-        while(l1 and l2 and l1.val == l2.val):
-            l1 = l1.next
-            l2 = l2.next
-        if not l1 and not l2:
-            is_palindrome = True
-        else:
-            is_palindrome = False
-        head = self.getReversedLL(reversed_ll_head, None)                                   
-        reversed_ll_head.next = l2
-        return is_palindrome
+    if not reversed_head or not head:
+      return True
+    else:
+      return False              
 
         
