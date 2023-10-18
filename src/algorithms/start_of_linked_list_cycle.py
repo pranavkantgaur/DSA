@@ -3,15 +3,6 @@
 #  def __init__(self, value, next=None):
 #    self.val = value
 #    self.next = next
-
-class Solution:
-  
-
-#class Node:
-#  def __init__(self, value, next=None):
-#    self.val = value
-#    self.next = next
-
 class Solution:
   def findCycleStart(self, head):
     '''
