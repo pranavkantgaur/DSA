@@ -4,6 +4,25 @@
 #    self.val = value
 #    self.next = next
 class Solution:
+  def getNodeFromCycle(self, head):
+    slow = head
+    fast = head
+    while(fast and fast.next): # get inside cycle
+      slow = slow.next
+      fast = fast.next.next
+      if slow == fast:
+        break
+    return slow
+
+  def getCycleLength(self, slow):
+    first = slow
+    last = slow.next
+    k = 0
+    while(last != first): #  get cycle length
+      k += 1
+      last = last.next     
+    return k      
+
   def findCycleStart(self, head):
     '''
     1. Reach inside cycle : O(n), O(1)
@@ -12,19 +31,9 @@ class Solution:
     4. Iterate first and last pointer until last.next != first : O(n), O(1)
     5. Return first 
     '''
-    slow = head
-    fast = head
-    while(fast and fast.next): # get inside cycle
-      slow = slow.next
-      fast = fast.next.next
-      if slow == fast:
-        break
-    first = slow
-    last = slow.next
-    k = 0
-    while(last != first): #  get cycle length
-      k += 1
-      last = last.next     
+
+    slow = self.getNodeFromCycle(head)        
+    k = self.getCycleLength(slow)
     first = head
     last = head
     while(k > 0):    # set sliding window
@@ -34,5 +43,4 @@ class Solution:
     while(first != last.next): # slide the window
       first = first.next
       last = last.next
-    return first            
-
+    return first   
