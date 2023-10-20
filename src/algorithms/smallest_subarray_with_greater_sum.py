@@ -3,32 +3,22 @@ import math
 
 class Solution:
   def findMinSubArray(self, s, arr):
-    # TODO: Write your code here
-    window_start = 0
-    window_end = 0
-    min_window_size = len(arr) + 1
-    window_sum = arr[0]
-    while(not(window_sum < s and window_end == len(arr) - 1)): # TODO: fix      
-      
-      if  window_sum >= s:
-        # shrink the window
-        while(window_start <= window_end and window_sum >= s):
-          if window_end - window_start + 1 < min_window_size:
-            min_window_size = window_end - window_start + 1
-          # bookkeeping
-          window_sum -= arr[window_start]
-          window_start += 1        
-
-      else: # expand
-        window_end += 1  
-        window_sum += arr[window_end]
-
-    if min_window_size == len(arr) + 1: # no solution found
-      min_window_size = 0
-    return min_window_size
     '''
-    1. start with window size 1
-    2. grow window if sum is < s, 
-    3. continue shrinking window untill sum > s and update min window size 
-    4. after while loop, return the min_length seen so far
+    1. start with 1-size window
+    2. for each end index of window, update current window sum
+    3. if window sum is greater than target, update min_length and attempt to get even better solution with same end index
+    4. move to next end index
+    5. return min length seen so far as solution.
     '''
+    start = 0
+    min_length = len(arr) + 1
+    wind_sum = 0
+    for end in range(len(arr)):
+      wind_sum += arr[end]
+      while(wind_sum >= s):
+        min_length = min(min_length, end - start + 1)         
+        wind_sum -= arr[start]
+        start += 1
+    if min_length == len(arr) + 1:
+      min_length = 0
+    return min_length      
