@@ -4,24 +4,36 @@
 class Solution:
   def findSubstring(self, str1, pattern):
     left = 0
-    right=0
+    right = 0
     min_len = len(str1) + 1
     min_left = -1
-    while (right<= len(arr)): 
-      right_letter = arr[right], 
+    pattern_dict = {}
+    matched = 0
+    for letter in pattern:
+      if letter in pattern_dict:
+        pattern_dict[letter] += 1
+      else:
+        pattern_dict[letter] = 1
+    while (right < len(str1)): 
+      right_letter = str1[right], 
       if right_letter in pattern_dict: 
         pattern_dict[right_letter] -= 1
         if pattern_dict[right_letter] == 0: 
-          matched+= 1
-      if matched==len(pattern_dict): 
-        min_len = min(min_len, right - left + 1)
-        min_left = left
-      left_letter = arr[left]
-      while(left_letter not in pattern_dict and left<= right): 
-        left += 1,
-        left_letter = arr[left]
-      if patter_dict[left_letter] == 0: matched -= 1
-        pattern _dict[left_letter] += 1
+          matched += 1
+      if matched == len(pattern_dict): # candidate found
+        if min_len  > right - left + 1: # update soln
+          min_left = left
+          min_len = right - left + 1
+        # shrink window to look for better soln
+        left_letter = str1[left]
+        while(left_letter not in pattern_dict and left <= right): 
+          left += 1
+          if left <= len(str1) - 1:
+            left_letter = str1[left]
+        if left_letter in pattern_dict:
+          if pattern_dict[left_letter] == 0: 
+            matched -= 1
+          pattern_dict[left_letter] += 1
       right += 1
     if min_len == len(str1) + 1:
       return ""
