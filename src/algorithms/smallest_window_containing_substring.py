@@ -20,16 +20,16 @@ class Solution:
         pattern_dict[right_letter] -= 1
         if pattern_dict[right_letter] == 0: 
           matched += 1
-      if matched == len(pattern_dict): # candidate found
-        if min_len  > right - left + 1: # update soln
+      if matched == len(pattern_dict): 
+        if min_len  > right - left + 1:
           min_left = left
           min_len = right - left + 1
-        # shrink window to look for better soln
         left_letter = str1[left]
-        while(left_letter not in pattern_dict and left <= right): 
+        while((left_letter not in pattern_dict or pattern_dict[left_letter] < 0) and left <= right): 
+          if pattern_dict[left_letter] < 0:
+            pattern_dict[left_letter] += 1
           left += 1
-          if left <= len(str1) - 1:
-            left_letter = str1[left]
+          left_letter = str1[left]
         if left_letter in pattern_dict:
           if pattern_dict[left_letter] == 0: 
             matched -= 1
