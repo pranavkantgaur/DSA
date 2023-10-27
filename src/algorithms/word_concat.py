@@ -13,20 +13,27 @@ class Solution:
         pattern_freq[word] += 1
       else:
         pattern_freq[word] = 1
-    while(right < len(str1)):
-      right_word = pattern_freq[right * word_length : (right + 1) * word_length] 
-      left_word = pattern_freq[left * word_length : (left + 1) * word_length]
+    
+    while(right <= len(str1) - word_length):
+      right_word = str1[right : right +  word_length] 
+      left_word = str1[left : left  + word_length]
+      
+      # if next word matches a word not seen yet, expand window
       if right_word in pattern_freq:
         pattern_freq[right_word] -= 1
         if pattern_freq[right_word] == 0:
           matched += 1
+          
+      # if all words matched, add left index to the list
       if matched == len(pattern_freq):
         result_indices.append(left)
         if pattern_freq[left_word] == 0:
           matched -= 1
         pattern_freq[left_word] += 1
         left += word_length
+      # if next word is not in the word list, slide the window past it.
       if right_word not in pattern_freq:
         left += word_length
       right += word_length
     return result_indices
+
