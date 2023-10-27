@@ -1,22 +1,23 @@
 # https://leetcode.com/problems/merge-intervals/
-'''
-Example 1:
 
-Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
-Output: [[1,6],[8,10],[15,18]]
-Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
+#class Interval:
+#  def __init__(self, start, end):
+#    self.start = start
+#    self.end = end
 
-Example 2:
+#  def print_interval(self):
+#    print("[" + str(self.start) + ", " + str(self.end) + "]", end='')
 
-Input: intervals = [[1,4],[4,5]]
-Output: [[1,5]]
-
-
-Naive algorithm: TC-> , SC->
-1. For each interval, get list of overlapping intervals:
-   * Identify the merged interval
-   * Replace all these intervals with the merged interval.
-'''
-                         
-            
-        
+class Solution:
+  def merge(self, intervals):
+    mergedIntervals = []
+    intervals.sort(key = lambda inter: inter.start)
+    mergedIntervals.append(intervals[0])
+    for idx in range(1, len(intervals)):
+      if intervals[idx].start <= mergedIntervals[-1].end:
+        new_interval = Interval(mergedIntervals[-1].start, max(intervals[idx].end, mergedIntervals[-1].end))
+        mergedIntervals.pop(-1)
+        mergedIntervals.append(new_interval)
+      else:
+        mergedIntervals.append(intervals[idx])
+    return mergedIntervals
