@@ -30,7 +30,6 @@ class Solution:
         if intervals[i].start <= end:
           start = min(start, intervals[i].start)
           end = max(end, intervals[i].end)
-          is_inserted = False
         else: 
           if not is_inserted:
             merged.append(Interval(start, end))
