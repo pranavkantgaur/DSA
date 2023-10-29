@@ -3,10 +3,17 @@ class Solution:
     def findDuplicates(self, nums: List[int]) -> List[int]:
         result = []
         offset = len(nums)
+        n = len(nums)
         for num in nums:
-            nums[(num - 1) % len(nums)] += offset
-        for num in nums:
-            if (nums[(num - 1) % len(nums)] // offset) == 2:
-                result.append((num - 1) % len(nums))
-        return result  
+            if num <= n: # to avoid out of index
+                id = num - 1
+            else:
+                id = num - offset - 1
+            if nums[id] > n: # visited once, repated 2 times
+                result.append(id + 1)
+            else:
+                nums[id] += offset
+        return result
+  
+        
         
