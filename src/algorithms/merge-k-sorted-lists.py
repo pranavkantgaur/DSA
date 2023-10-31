@@ -18,49 +18,36 @@ Similar to our solution:
 
 '''
 
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+import heapq
 class Solution:
-    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        list1head = list1
-        list2head = list2
-        resulthead = None
-        resulttail = None
-        while list1head and list2head:
-            if list1head.val < list2head.val:
-                if not resulthead:
-                    resulthead = list1head         
-                    resulttail = list1head
-                    
-                else:
-                    resulttail.next = list1head
-                    resulttail = list1head
-                list1head = list1head.next
-            else:
-                if not resulthead:
-                    resulthead = list2head         
-                    resulttail = list2head
-                else:
-                    resulttail.next = list2head
-                    resulttail = list2head
-                list2head = list2head.next            
-        if list1head:
-            if resulttail:
-                resulttail.next = list1head
-            else:
-                resulthead = list1head
-        if list2head:
-            if resulttail:
-                resulttail.next = list2head
-            else:
-                resulthead = list2head
-        return resulthead
-
-    
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        if lists:
-            merged_list = lists[0]
-        else:
-            return None
-        for next_list in lists[1:]:
-            merged_list = self.mergeTwoLists(merged_list, next_list)
-        return merged_list  
-        
+        '''
+        1. list of running pointers across k lists
+        2, at each iteration get the min value node from heap, remove it from the heap and add next node from same list into the heap
+        3. connect the next of prev node to this node
+        4. set prev node = current node
+        5. continue till heap is empty
+        '''
+        min_heap = []
+        for ll in lists:
+            item = (ll.val, ll)
+            heapq.heappush(min_heap, item)
+        prev = None
+        while(len(min_heap)):
+            _, node = heapq.heappop(min_heap)
+            if prev:
+                prev.next = node
+                prev = node
+            else:
+                prev = node
+                head = node
+            
+            if node.next:
+                item = (node.val, node.next)
+                heapq.heappush(min_heap, item)
+        return head
