@@ -9,17 +9,53 @@ Approach: using min-heap, TC: O(n*logk) SC: O(k) ,  better than sorting all inte
    * remove top element from heap(regardless of prev. if/else), get corresponding emp_id, push next interval of that employee using per_emp_int_ids[emp_id] value    
 4. return result   
 '''
-while(len(min_heap >= 2):  
-    if min_heap[0].end < min_heap[1].start:
-      result.append(Interval(min_heap[0].end, min_heap[1].start))       
-    min_start_time_int = pqpop(min_heap, 0)    
-    # get emp id
-    emp_id = min_start_time_int.emp_id
-    # get next interval for this employee
-    int_id = per_emp_int_ids[emp_id]
-    if per_emp_int_ids[emp_id] < len(intervals[emp_id]):
-      per_emp_int_ids[emp_id] += 1
-      pqpush(min_heap, intervals[emp_id][int_id]) # push to heap if possible
-return result      
+from heapq import *
+
+#
+#class Interval:
+#    def __init__(self, start, end):
+#        self.start = start
+#        self.end = end
+#
+#    def print_interval(self):
+#        print("[" + str(self.start) + ", " + str(self.end) + "]", end='')
+#
+
+class EmployeeInterval:
+
+    def __init__(self, interval, employeeIndex, intervalIndex):
+        self.interval = interval  # interval representing employee's working hours
+        # index of the list containing working hours of this employee
+        self.employeeIndex = employeeIndex
+        self.intervalIndex = intervalIndex  # index of the interval in the employee list
+
+    def __lt__(self, other):
+        # min heap based on meeting.end
+        return self.interval.start < other.interval.start
+
+class Solution:
+  def findEmployeeFreeTime(self, schedule):
+      result = [] 
+      next_int_index_list = [0 for k in range(len(schedule))]   
+      min_heap = []
+      for i in range(len(schedule)):
+        heapq.push(min_heap, [schedule[i][0], i])
+
+      while(len(min_heap) >= 2):
+        if min_heap[0].end < min_heap[1].start:
+          result.append(Interval(min_heap[0].end, min_heap[1].start))
+        # remove the earliest start time interval from heap
+        min_start_inter = heap.pop(min_heap) # TODO: check heap API
+        # insert nxt interval for same employee in the heap
+        emp_id = min_start_int[1]
+        next_inter_id = next_int_index_list[emp_id]
+        if next_id < len(schedule[emp_id]):
+          heap.push([schedule[emp_id][next_id], emp_id])
+          next_int_index_list[emp_id] += 1          
+      return result                  
+
+
+      return result
+     
   
   
