@@ -21,6 +21,18 @@ from heapq import *
 #        print("[" + str(self.start) + ", " + str(self.end) + "]", end='')
 #
 
+import heapq
+
+#
+#class Interval:
+#    def __init__(self, start, end):
+#        self.start = start
+#        self.end = end
+#
+#    def print_interval(self):
+#        print("[" + str(self.start) + ", " + str(self.end) + "]", end='')
+#
+
 class EmployeeInterval:
 
     def __init__(self, interval, employeeIndex, intervalIndex):
@@ -36,26 +48,36 @@ class EmployeeInterval:
 class Solution:
   def findEmployeeFreeTime(self, schedule):
       result = [] 
-      next_int_index_list = [0 for k in range(len(schedule))]   
+      current_int_index_list = [0 for k in range(len(schedule))]   # points to the index of the current interval for each employee which is in the heap
       min_heap = []
       for i in range(len(schedule)):
-        heapq.push(min_heap, [schedule[i][0], i])
-
+        item = (schedule[i][0].start, [schedule[i][0], i])
+        heapq.heappush(min_heap, item)
+      
       while(len(min_heap) >= 2):
-        if min_heap[0].end < min_heap[1].start:
-          result.append(Interval(min_heap[0].end, min_heap[1].start))
+        if min_heap[0][1][0].end < min_heap[1][1][0].start:
+          result.append(Interval(min_heap[0][1][0].end, min_heap[1][1][0].start))
         # remove the earliest start time interval from heap
-        min_start_inter = heap.pop(min_heap) # TODO: check heap API
-        # insert nxt interval for same employee in the heap
-        emp_id = min_start_int[1]
-        next_inter_id = next_int_index_list[emp_id]
-        if next_id < len(schedule[emp_id]):
-          heap.push([schedule[emp_id][next_id], emp_id])
-          next_int_index_list[emp_id] += 1          
-      return result                  
+        _, schedule_empid_item = heapq.heappop(min_heap) 
+        # insert nxt interval for same employee in the heap        
+        emp_id = schedule_empid_item[1]
+        print('POPED', schedule_empid_item)
+        print('EMP ID: ', emp_id)
+        current_inter_id = current_int_index_list[emp_id]
+        if current_inter_id < len(schedule[emp_id]) - 1:
+          next_id = current_inter_id + 1
+          heapq.heappush(min_heap, (schedule[emp_id][next_id].start, [schedule[emp_id][next_id], emp_id]))
+          current_int_index_list[emp_id] += 1          
+          print('HEAP; ', min_heap)
+      
+      # if only one employee interval left in min heap
+      if len(min_heap) == 1 and current_int_index_list[min_heap[0][1][1]] < len(schedule[min_heap[0][1][1]]):
+        emp_id = min_heap[0][1][1]
+        i = current_int_index_list[emp_id]
+        while(i < len(schedule[emp_id])):            
+            result.append(Interval(schedule[emp_id][i].end, schedule[emp_id][i].start))
+            i += 1  
 
-
-      return result
-     
+      return result                       
   
   
