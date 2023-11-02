@@ -30,6 +30,7 @@ class Solution:
     current = 0
     while(current < len(nums)):
       if nums[current] != current + 1:
-        return current + 1                          
+        return current + 1   
+      current += 1
 
     return len(nums) + 1
