@@ -4,43 +4,68 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+
+#class Node:
+#  def __init__(self, value, next=None):
+#    self.val = value
+#    self.next = next
+
+#  def print_list(self):
+#    temp = self
+#    while temp is not None:
+#      print(temp.val, end=" ")
+#      temp = temp.next
+#    print()
+
 class Solution:
-    def reverse_subll(self, slow, fast):
-        prev = None
-        head = slow
-        while(head != fast):
-            k = head.next
-            head.next = prev
-            head = k
-            prev = head
-        return
+  def reverse(self, head, k):
+    # TODO: Write your code here
+    '''
+    1. store left sublist tail
+    2. store to be reversed sublist head
+    3. reverse sublist
+    4. set left sublist.next = qth node
+    5. set reversed_sublist_head.next = qth node.next
+    6. set left sublist tail = reveresed sublist head
+    7. reversed sublist head = reversed_sublist_head.next
+    8. continue this untill next sublist size is less than k
+    '''
+    prev = None
+    current = head
+    left_sublist_tail = prev
+    sublist_head = current
+    while(True):
+      # create window of size k if possible
+      # reverse the list within this window
+      # update pointers: left sublist next, original head of reversed sublist next
+      # set pointers: left sublist, head of sublist to be reversed
+      # go back to step-1
+      # if not possible, come-out of this loop              
+      i = 0
+      while(current and i < k):
+        prev = current
+        current = current.next
+        i += 1
+      # prev is the kth node
+      if i < k: # remaining sublist is smaller than k
+        break
+      if left_sublist_tail is None:
+        head = prev
+      # reverse between sublist head and prev
+      i = 0
+      prev  = left_sublist_tail
+      current = sublist_head
+      while(i < k):
+        temp = current.next
+        current.next = prev
+        prev = current
+        current = temp
+        i += 1
+      left_sublist_tail.next = prev
+      sublist_head.next = current  
+      left_sublist_tail = prev
+      sublist_head = current      
 
-
-    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        last_ll_tail = None
-        slow = head
-        fast = head
-        new_head = None
-        while(fast):
-            # create sliding window
-            index = 0
-            while(index < k - 1 and fast != None):
-                fast = fast.next
-                index += 1
-            if fast == None:
-                last_ll_tail.next = slow
-                break
-            # reverse ll within sliding window
-            if new_head == None:
-                new_head = fast
-                next_ll_head = fast.next
-            self.reverse_subll(slow, fast)        
-            if last_ll_tail != None:
-                last_ll_tail.next = fast
-            # move the sliding window
-            last_ll_tail = slow        
-            slow = next_ll_head
-            fast = slow
-        return new_head    
+    return head
                
         
