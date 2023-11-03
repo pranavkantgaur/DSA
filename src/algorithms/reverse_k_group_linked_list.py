@@ -1,4 +1,7 @@
-# https://leetcode.com/problems/reverse-nodes-in-k-group/description/
+# Given the head of a LinkedList and a number ‘k’, reverse every ‘k’ sized sub-list starting from the head.
+
+# If, in the end, you are left with a sub-list with less than ‘k’ elements, reverse it too.
+
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -32,7 +35,6 @@
 
 class Solution:
   def reverse(self, head, k):
-    # TODO: Write your code here
     '''
     1. store left sublist tail
     2. store to be reversed sublist head
@@ -45,32 +47,12 @@ class Solution:
     '''
     prev = None
     current = head
-    while(True):
-      # create window of size k if possible
-      # reverse the list within this window
-      # update pointers: left sublist next, original head of reversed sublist next
-      # set pointers: left sublist, head of sublist to be reversed
-      # go back to step-1
-      # if not possible, come-out of this loop              
+    while(True):              
       left_sublist_tail = prev
       sublist_head = current
-      # check if reversal is possible
-      i = 0
-      while(current and i < k):
-        prev = current
-        current = current.next
-        i += 1
-      # prev is the kth node
-      if i < k: # remaining sublist is smaller than k
-        break
-      
-      if left_sublist_tail is None:
-        head = prev
       # reverse between sublist head and prev
       i = 0
-      prev  = left_sublist_tail
-      current = sublist_head
-      while(i < k):
+      while(i < k and current):
         temp = current.next
         current.next = prev
         prev = current
@@ -82,8 +64,7 @@ class Solution:
         head = prev
       sublist_head.next = current
       prev = sublist_head
-        
-
-    return head
-               
+      if not current:
+        break
+    return head               
         
