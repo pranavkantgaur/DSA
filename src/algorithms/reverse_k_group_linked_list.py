@@ -17,6 +17,19 @@
 #      temp = temp.next
 #    print()
 
+
+#class Node:
+#  def __init__(self, value, next=None):
+#    self.val = value
+#    self.next = next
+
+#  def print_list(self):
+#    temp = self
+#    while temp is not None:
+#      print(temp.val, end=" ")
+#      temp = temp.next
+#    print()
+
 class Solution:
   def reverse(self, head, k):
     # TODO: Write your code here
@@ -32,8 +45,6 @@ class Solution:
     '''
     prev = None
     current = head
-    left_sublist_tail = prev
-    sublist_head = current
     while(True):
       # create window of size k if possible
       # reverse the list within this window
@@ -41,6 +52,9 @@ class Solution:
       # set pointers: left sublist, head of sublist to be reversed
       # go back to step-1
       # if not possible, come-out of this loop              
+      left_sublist_tail = prev
+      sublist_head = current
+      # check if reversal is possible
       i = 0
       while(current and i < k):
         prev = current
@@ -49,6 +63,7 @@ class Solution:
       # prev is the kth node
       if i < k: # remaining sublist is smaller than k
         break
+      
       if left_sublist_tail is None:
         head = prev
       # reverse between sublist head and prev
@@ -61,10 +76,13 @@ class Solution:
         prev = current
         current = temp
         i += 1
-      left_sublist_tail.next = prev
-      sublist_head.next = current  
-      left_sublist_tail = prev
-      sublist_head = current      
+      if left_sublist_tail:
+        left_sublist_tail.next = prev
+      else:
+        head = prev
+      sublist_head.next = current
+      prev = sublist_head
+        
 
     return head
                
