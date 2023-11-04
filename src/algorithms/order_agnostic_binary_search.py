@@ -10,20 +10,20 @@ class Solution:
     left = 0
     right = len(arr) - 1
     if arr[0] > arr[-1]: # descending
-      while(left < right):
+      while(left <= right):
         mid = left + (right - left) // 2
         if arr[mid] > key:
           left = mid + 1
-        if arr[mid] < key:
+        elif arr[mid] < key:
           right = mid - 1
         else:
           return mid
     elif arr[0] < arr[-1]: # ascending
-        while(left < right):
+        while(left <= right):
           mid = left + (right - left) // 2
           if arr[mid] > key:
             right = mid - 1
-          if arr[mid] < key:
+          elif arr[mid] < key:
             left = mid + 1
           else:
             return mid
