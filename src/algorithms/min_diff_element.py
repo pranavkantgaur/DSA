@@ -11,7 +11,7 @@ class Solution:
         left = mid + 1
       else:
         return arr[mid]
-    if right == -1 or abs(arr[left] - key) < abs(arr[right] - key):
+    if right == -1 or (left != len(arr) and abs(arr[left] - key) < abs(arr[right] - key)):
       return arr[left]
     else:
       return arr[right]
