@@ -6,27 +6,21 @@
 
 class Solution:
     def removeNodes(self, head):
-        # push nodes to the monotonic decreasing stack along with their prev node address
-        # if a node with higher value if found, for each popped node from the stack, delete it from linked list
-        # make sure to set prev, head pointers correctly after deleting the node from ll 
-        # we are updating the linked list in the same loop we are iterating on it.
-        prev = None
+        '''
+        1. The monotonic decreasing stack will have nodes in the same order as on resulting linked list
+        2. Pop nodes from the stack untill the value of top element is greater than that of the current node
+        3. If this results in emptying of the stack, update the head.
+        '''
         current = head
-        stack = [] # <node, prev_node>
-        while(current):          
-          while(len(stack) > 0  and current.val > stack[-1][0].val):
-            top_node, top_prev_node = stack.pop(-1)                      
-            if top_prev_node:
-              # delete the node
-              top_prev_node.next = current
-              prev = top_prev_node
-            else:
-              head = current 
-              prev = None           
-            del top_node            
-
-          stack.append([current, prev])
-          prev = current
+        stack = []
+        while(current):
+          while(stack and current.val > stack[-1].val):
+            stack.pop(-1)
+          if stack:
+            stack[-1].next = current
+          else:
+            head = current            
+          stack.append(current)
           current = current.next
-        
+
         return head
