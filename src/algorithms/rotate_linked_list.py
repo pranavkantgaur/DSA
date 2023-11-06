@@ -25,12 +25,15 @@ class Solution:
     i = 0
     while(i < rotations - 1):
       right = right.next
-      i += 1
-    left_sublist_tail = right
+      i += 1   
+    left_sublist_tail = None       
     while(right.next):
+      left_sublist_tail = left
       left = left.next
-      right = right.next
+      right = right.next    
+    right.next = head
+    if left_sublist_tail:
+      left_sublist_tail.next = None
     head = left
-    right.next = prev_head
-    left_sublist_tail.next = None
+
     return head
