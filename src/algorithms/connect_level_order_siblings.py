@@ -6,19 +6,20 @@
 
 class Solution:
     def connect(self, root):
-        queue = []
-        queue.append(root)
-        while(len(queue)):
-          level_size = len(queue)
-          for id in range(level_size):
-            node = queue.pop(0)
-            if id < level_size - 1:
-              node.next = queue[0]
-            else:
-              node.next = None
-            if node.left:
-              queue.append(node.left)
-            if node.right:
-              queue.append(node.right)
-        return root
+      queue = []
+      queue.append(root)
+      while(len(queue)):
+        level_size = len(queue)
+        prev = None
+        for _ in range(level_size):
+          current = queue.pop(0)
+          if prev:
+            prev.next = current         
+          prev = current  
+          current.next = None
+          if current.left:
+            queue.append(current.left)
+          if current.right:
+            queue.append(current.right)
+      return root
 
