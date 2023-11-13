@@ -16,21 +16,53 @@ class Solution:
         #return: print out the diagonal traversal,  no need to print new line
         #code here
         '''
-        1. Do DFS and assign every right node as the same dia. group as the parent node
-        2. To every node on the left edge of a parent node assign dia. group as parent + 1
-        3. store all these nodes clustered by diagonal group in a hashmap of node-lists
-        4. print the lists by increasing dia. group distance.
+                  1*
+           2**            4*
+       5***   6**   7**      8*
+                        10**    9*
+       O= [1, 4, 8, 9, 2, 6, 7, 10, 5]
+       
+       
+                       1*
+                2** 
+            3***   4**
+            O  = [1, 2, 4, 3]
+            
+            
+                  1*
+           2**            4*
+       5***   6**   7**      8*
+                        10**    9*
+                              11**
+                                  12**
+                                      13** 
+                                         14**
+       O= [1, 4, 8, 9,2, 6, 7, 10, 11, 12, 13, 14, 5]         
+       All right nodes copy diag. id from parent and are immidietly printed and left nodes get parent + 1
+       When we go to left node, we assing id = parent id + 1 and store it in the hashmap for later printing
+       When we go to right node, we assign id = parent id and print it immidietely
         '''
+        result = []
         stack = []
         stack.append([root, 0])
         while(len(stack)):
-            node, dist = stack.pop(-1)
-            diag_map[dist].append(node)
+            node, id = stack.pop(-1)
+            result.append(node.data)
+            if node.right:
+                stack.append([node.right, id])
             if node.left:
-                stack.append([node.left, dist])
-            if node.left:
-                stack.append([node.right, dist + 1])
-
+                hMap[id + 1].append(node.left)
+            if not node.left and not node.right:
+                del hMap[id][0]
+                if len(hMap[id]):
+                    stack.append(hMap[id][0])
+                else:
+                    if id + 1 in hMap:
+                        stack.append(hMap[id + 1][0])
+                    else:
+                        break
+        return result
+   
 
 
 
