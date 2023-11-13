@@ -45,20 +45,24 @@ class Solution:
         result = []
         stack = []
         stack.append([root, 0])
+        hMap = {}
+        hMap[0] = [root]
         while(len(stack)):
             node, id = stack.pop(-1)
             result.append(node.data)
             if node.right:
                 stack.append([node.right, id])
             if node.left:
+                if id + 1 not in hMap:
+                    hMap[id + 1] = []
                 hMap[id + 1].append(node.left)
-            if not node.left and not node.right:
+            if node.right is None:
                 del hMap[id][0]
                 if len(hMap[id]):
-                    stack.append(hMap[id][0])
+                    stack.append([hMap[id][0], id])
                 else:
                     if id + 1 in hMap:
-                        stack.append(hMap[id + 1][0])
+                        stack.append([hMap[id + 1][0], id + 1])
                     else:
                         break
         return result
