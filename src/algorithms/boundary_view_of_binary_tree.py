@@ -26,7 +26,7 @@ def traverseBoundary(root):
             node, id = queue.pop(0)
             if node.left or node.right: # not a leaf
                 if id not in hMap: # only first occurance
-                    hMap[id] = node.data
+                    hMap[id] = node
             if node.left:
                 queue.append([node.left, id - 1])	
             if node.right:
@@ -34,20 +34,23 @@ def traverseBoundary(root):
     # get leaf nodes
     stack = []
     leaf_nodes = []
-    stack.append([root, 0])								
+    stack.append([root, 0])							
+    
     while(len(stack)):
         node, visited = stack[-1]
-        if not visited:
+        if visited == 0:
+            stack[-1][1] = 1 # visited mark	
             if node.left or node.right:
                 if node.left:
                     stack.append([node.left, 0])
             else:
-                leaf_node.append(node.data)
-            stack[-1][1] = 1 # visited mark	
+                leaf_nodes.append(node)
+            
         else:
             stack.pop(-1)
             if node.right:
                 stack.append([node.right, 0])
+    
     left_boundary_dist = sorted([key for key in hMap.keys() if key < 0], reverse = True)
     right_boundary_dist = sorted([key for key in hMap.keys() if key > 0], reverse = True)
     result = []
