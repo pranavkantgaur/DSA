@@ -7,25 +7,18 @@
 #         self.right = None
 
 class Solution:
-    def checkNodeExists(self, node, root):
-        if root is None:
-            return False
-        if root.val == node.val:
-            return True
-        return self.checkNodeExists(node, root.left) or self.checkNodeExists(node, root.right)
-
-    def getLCAHelper(self, p, q, root):
-	    if root is None: return None
-	    # check if either the p,q exist on either side of tree rooted at root or only p or q exists in one of the subtree
-	    if self.checkNodeExists(p, root.left) != self.checkNodeExists(q, root.left) or self.checkNodeExists(p, root.right) != self. checkNodeExists(q, root.right): # present on one side only
-		    return root
-	    else:
-		    lca_node = self.getLCAHelper(p, q, root.left)	    
-		    if lca_node is None:
-			    lca_node = self.getLCAHelper(p, q, root.right)
-			    if lca_node is None:
-				    return None
-		    return lca_node		
-
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-	    return self.getLCAHelper(p, q, root) # return the LCA
+        def containsNode(root, node):
+            if root is None: return False
+            if root == node: return True
+            return containsNode(root.left, node) or containsNode(root.right, node)
+
+        if root in [p, q]: return root    
+        contains_p = containsNode(root.left, p)
+        contains_q = containsNode(root.left, q) 
+        if contains_p != contains_q: return root
+        # wither left contains both nodes or it contains None    
+        if contains_p:
+            return self.lowestCommonAncestor(root.left, p, q)     
+        else:
+            return self.lowestCommonAncestor(root.right, p, q) # p, q are in root.right subtree
