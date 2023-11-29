@@ -1,10 +1,17 @@
 # https://leetcode.com/problems/egg-drop-with-2-eggs-and-n-floors/
 class Solution:
-    def twoEggDrop(self, n: int) -> int:
-        if n <= 2: return n
-        drops = n
+    def helper(self, n, dp):
+        if n <= 2: 
+            dp[n] = n
+            return dp[n]
         for i in range(1, n):
-            drops = min(drops, max(1 + i - 1, 1 + self.twoEggDrop(n - i)))
-        return drops
+            dp[n] = min(n if dp[n] == 0 else dp[n], 1 + max(i - 1, self.helper(n - i, dp)))
+        return dp[n]
 
+    def twoEggDrop(self, n: int) -> int:
+        dp = [0 for _ in range(n + 1)]
+        self.helper(n, dp)
+        return dp[n]
+
+        
         
