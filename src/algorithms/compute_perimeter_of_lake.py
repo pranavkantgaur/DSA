@@ -9,28 +9,31 @@
 class Solution:
   
   def dfs(self, row, col, matrix, param_length):
-    matrix[row][col] = 2
-    # check neighborhood and update param_length
-    if row == len(matrix) - 1 or matrix[row + 1][col] == 0: # bottommost
-      param_length += 1
-    else:
-      if matrix[row + 1][col] == 1:
-        param_length = self.dfs(row + 1, col, matrix, param_length)        
-    if col == len(matrix[0]) - 1 or matrix[row][col + 1] == 0: # rightmost
-      param_length += 1
-    else:
-      if matrix[row][col + 1] == 1:
-        param_length = self.dfs(row, col + 1, matrix, param_length)      
-    if col == 0 or matrix[row][col - 1] == 0: # left most
-      param_length += 1      
-    else:
-      if matrix[row][col - 1] == 1:
-        param_length = self.dfs(row, col - 1, matrix, param_length)   
-    if row == 0 or matrix[row - 1][col] == 0: # topmost
-      param_length += 1
-    else:
-      if matrix[row - 1][col] == 1: 
-        param_length = self.dfs(row - 1, col, matrix, param_length)   
+    stack = [[row, col]]
+    while(len(stack)):
+      top_row, top_col = stack.pop()
+      matrix[top_row][top_col] = 2
+      # check neighbors
+      if top_row == 0 or matrix[top_row - 1][top_col] == 0:
+        param_length += 1
+      else:
+        if matrix[top_row - 1][top_col] == 1:
+          stack.append([top_row - 1, top_col])
+      if top_row == len(matrix) - 1 or matrix[top_row + 1][top_col] == 0:
+        param_length += 1
+      else:
+        if matrix[top_row + 1][top_col] == 1:
+          stack.append([top_row + 1, top_col])        
+      if top_col == 0 or matrix[top_row][top_col - 1] == 0:
+        param_length += 1
+      else:
+        if matrix[top_row][top_col - 1] == 1:
+          stack.append([top_row, top_col - 1])      
+      if top_col == len(matrix[0]) - 1 or matrix[top_row][top_col + 1] == 0:
+        param_length += 1
+      else:
+        if matrix[top_row][top_col + 1] == 1:
+          stack.append([top_row, top_col + 1])        
     return param_length
   
   def findIslandPerimeter(self, matrix):
