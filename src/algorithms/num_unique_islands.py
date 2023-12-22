@@ -12,16 +12,17 @@ class Solution:
         row, col, direct = stack.pop()
         current_path_str += direct        
         matrix[row][col] = 0
-        if matrix[row][col-1]:
+        # check neighbors
+        if col > 0 and matrix[row][col-1]: # left
             stack.append([row, col - 1, 'l'])
             matrix[row][col - 1] = 0
-        if matrix[row][col+1]:
+        if col < len(matrix[0]) - 1  and matrix[row][col+1]: # right
             stack.append([row, col + 1, 'r'])
             matrix[row][col + 1] = 0
-        if matrix[row - 1][col]:
+        if row > 0 and matrix[row - 1][col]: # top
             stack.append([row - 1, col, 't'])
             matrix[row - 1][col] = 0
-        if matrix[row + 1][col]:
+        if row < len(matrix) - 1 and matrix[row + 1][col]: # bottom
             stack.append([row + 1, col, 'b'])
             matrix[row + 1][col] = 0
     path_strings.add(current_path_str)
