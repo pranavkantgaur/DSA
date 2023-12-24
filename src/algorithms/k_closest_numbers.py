@@ -12,7 +12,7 @@ class Solution:
         low = mid + 1
       else:
         high = mid - 1
-    return left
+    return low
     
   def findClosestElements(self, arr, K, X):
     if len(arr) < K: return []
