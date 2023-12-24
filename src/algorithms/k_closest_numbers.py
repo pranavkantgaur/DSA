@@ -23,18 +23,37 @@ class Solution:
     max heap top and push current number
     '''
     index = self.binary_search(arr, X)
-    low = max(0, index - K)
-    high = min(len(arr) - 1, index + K)
-    max_heap = []
-    for num in arr[low: high + 1]:
-      if len(max_heap) < K:
-        item = (-abs(num - X), num) # push into max heap based on distance from X
-        heappush(max_heap, item)
+    left = index
+    right = index
+    print('num: ', arr[index])
+    while(left >= 0 and right <= len(arr) - 1 and len(result) < K):
+      left_diff = abs(arr[left] - X)
+      right_diff = abs(arr[right] - X)
+      if left_diff < right_diff:
+        result.append(arr[left])
+        left -= 1  
+      elif left_diff > right_diff:
+        result.append(arr[right])
+        right += 1
       else:
-        if -max_heap[0][0] > abs(num - X):
-          heappop(max_heap)
-          item = (-abs(num - X), num)
-          heappush(max_heap, item)
-    while(len(max_heap)):
-      result.append(heappop(max_heap)[1])
-    return result[::-1]
+        if left == right: 
+          result.append(arr[left])
+          left -= 1
+          right += 1
+          continue
+        result.append(arr[left])
+        left -= 1
+        if left >= 0 and right - left < K:
+          result.append(arr[right])
+          right += 1
+    print('res: ', len(result), right, left)
+    # TODO: fix for termination of loop before k elements
+    while(len(result) < K):
+      if left >= 0:
+        result.append(arr[left])
+        left -= 1
+      if right <= len(arr) - 1:
+        result.append(arr[right])
+        right += 1
+    result.sort()
+    return result
