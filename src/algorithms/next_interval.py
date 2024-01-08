@@ -16,12 +16,13 @@ class Solution:
     n = len(intervals)
     result = [-1 for x in range(n)]
     maxend_heap, maxstart_heap = [], []
+    # initialize max-heaps
     for id, interval in enumerate(intervals):
-      heappush(maxend_heap, (-interval.end, [id, interval]))
-      heappush(maxstart_heap, (-interval.start, [id, interval]))
+      heappush(maxend_heap, (-interval.end, id))
+      heappush(maxstart_heap, (-interval.start, id))
     while(len(maxend_heap)):
-      while(len(maxstart_heap) and -maxstart_heap[0][1][1].start >= maxend_heap[0][1][1].end):
-        _, [start_id, _] = heappop(maxstart_heap)
-        result[maxend_heap[0][1][0]] = start_id
+      while(len(maxstart_heap) and -maxstart_heap[0][0] >= -maxend_heap[0][0]):
+        _, start_id = heappop(maxstart_heap)
+        result[maxend_heap[0][1]] = start_id
       heappop(maxend_heap)
     return result
