@@ -6,27 +6,24 @@ class Solution:
   start id, length of subarray, 
   '''
 
-  def findKSubset(self, arr, start_id, k, curr_sum, total_sum, dp):
-    if curr_sum == total_sum - curr_sum: 
-      dp[start_id][k] = 1
-      return True
-    if start_id == len(arr) or len(arr) - start_id < k: 
-      dp[start_id][k] = 0
-      return False
-    if dp[start_id + 1][k - 1] == -1:
-      self.findKSubset(arr, start_id + 1, k - 1, curr_sum + arr[start_id], total_sum, dp)
-    include = dp[start_id + 1][k - 1]
-    if not include:
-      if dp[start_id + 1][k] == -1:
-        self.findKSubset(arr, start_id + 1, k, curr_sum, total_sum, dp)
-    exclude = dp[start_id + 1][k]
-    return include or exclude
+  # top-down memoization implementation.
+  def helper(self, arr, start_id, current_sum, total_sum, dp):
+    if dp[start_id][current_sum] != -1: return dp[start_id][current_sum]
+    if total_sum == 2 * current_sum: 
+      dp[start_id][current_sum] = 1
+      return 1
+    if start_id == len(arr):
+      dp[start_id][current_sum] = 0
+      return 0
+    include = self.helper(arr, start_id + 1, current_sum + arr[start_id], total_sum, dp)
+    exclude = self.helper(arr, start_id + 1, current_sum, total_sum, dp)
+    dp[start_id][current_sum] = include or exclude
+    return dp[start_id][current_sum]
 
   def canPartition(self, arr):
-    total_sum = sum(arr)
-    dp = [[[-1] for _ in range(len(arr) + 1)] for _ in range(len(arr) + 1)]
-    for k in range(1, len(arr) // 2 + 1):
-      for start_id in range(len(arr) - k + 1):
-        curr_sum = 0
-        if self.findKSubset(arr, start_id, k, curr_sum, total_sum, dp): return True # given the subarray starting from start_id, find if we have a subset of size k for which 2 subset equality is satisfied?
-    return False
+    dp = [[-1 for _ in range(sum(arr) + 1)] for _ in range(len(arr) + 1)]
+    can_partition = self.helper(arr, 0, 0, sum(arr), dp)
+    if can_partition: 
+      return True
+    else: 
+      return False
