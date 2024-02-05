@@ -29,4 +29,5 @@ class Solution:
   
   def canPartition(self, num, sum):
     dp = [[-1 for _ in range(sum + 1)] for _ in range(len(num) + 1)]
-    return self.helper(0, num, sum, dp)
+    self.helper(0, num, sum, dp)
+    return dp[0][sum] == 1
