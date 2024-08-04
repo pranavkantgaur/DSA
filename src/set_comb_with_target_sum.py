@@ -5,14 +5,15 @@ class Solution:
     total_sum = sum([abs(num) for num in nums])
     dp = [[-1 for _ in range(2 * total_sum + 1)] for  _ in range(len(nums) + 1)]
     for start_id in range(len(nums), 0, -1):
-      for rem_sum in range(2 * total_sum + 1):
+      start_rem_sum = sum([abs(num) for num in nums[:start_id - 1]])
+      for rem_sum in range(start_rem_sum, 2 * total_sum + 1): # ignoring the invalid/unreachable states
         if start_id == len(nums):
-          t = rem_sum - total_sum
+          t = rem_sum - total_sum 
           if abs(t) == abs(nums[start_id - 1]):
             dp[start_id][rem_sum] = 1
           else:
             dp[start_id][rem_sum] = 0
         else:
-          dp[start_id][rem_sum] = dp[start_id + 1][rem_sum - nums[start_id - 1]] + dp[start_id + 1][rem_sum + nums[start_id + 1]]
+          dp[start_id][rem_sum] = dp[start_id + 1][rem_sum - nums[start_id - 1]] + dp[start_id + 1][rem_sum + nums[start_id - 1]]
     return dp[1][total_sum + target]
       
